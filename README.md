@@ -4,7 +4,7 @@ The source code of this project is maintained with git.
 
 ```
 git clone --recurse-submodules <repository>
-cd smart-garden-gateway
+cd smart-garden-gateway-public
 ```
 
 ## Build Instructions ##
