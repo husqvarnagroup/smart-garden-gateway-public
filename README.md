@@ -1,4 +1,4 @@
-## Obtaining the Source Code ##
+# Obtaining the Source Code #
 
 The source code of this project is maintained with git.
 
@@ -6,14 +6,17 @@ The source code of this project is maintained with git.
 git clone --recurse-submodules <repository>
 cd smart-garden-gateway-public
 ```
+# Prerequisites #
 
-## Build Instructions ##
+* The Yocto build host packages need [to be installed](https://www.yoctoproject.org/docs/2.5.1/brief-yoctoprojectqs/brief-yoctoprojectqs.html#brief-build-system-packages)
+
+# Build Instructions #
 
 * Set TEMPLATECONF ```export TEMPLATECONF=${PWD}/yocto/meta-distribution/conf```
 * Initiate build directory ```source yocto/openembedded-core/oe-init-build-env build-gardena```
 * Run ```bitbake gardena-image-opensource-prod```
 
-## Repository Layout ##
+# Repository Layout #
 
 This repository is a container, which contains our documentation and
 build script, as well as submodules in the following structure
