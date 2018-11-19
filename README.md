@@ -31,6 +31,3 @@ build script, as well as submodules in the following structure
     * ```/yocto/meta-openembedded``` – Collection of layers for the OE-core universe
     * ```/yocto/meta-readonly-rootfs-overlay``` – Writable rootfs overlay on top of a read-only rootfs
     * ```/yocto/meta-swupdate``` – Update mechanism software
-
-
-The script ```init_repo.sh``` can be used to initialize all submodules.
