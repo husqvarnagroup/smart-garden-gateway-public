@@ -1,27 +1,27 @@
 [submodule "yocto/meta-openembedded"]
 	path = yocto/meta-openembedded
-	url = ../smart-garden-gateway-yocto-meta-openembedded.git
+	url = ../../husqvarnagroup/smart-garden-gateway-yocto-meta-openembedded.git
 [submodule "yocto/meta-gardena"]
 	path = yocto/meta-gardena
-	url = ../smart-garden-gateway-yocto-meta-gardena.git
+	url = ../../husqvarnagroup/smart-garden-gateway-yocto-meta-gardena.git
 [submodule "yocto/meta-distribution"]
 	path = yocto/meta-distribution
-	url = ../smart-garden-gateway-yocto-meta-distribution.git
+	url = ../../husqvarnagroup/smart-garden-gateway-yocto-meta-distribution.git
 [submodule "yocto/meta-mediatek"]
 	path = yocto/meta-mediatek
-	url = ../smart-garden-gateway-yocto-meta-mediatek.git
+	url = ../../husqvarnagroup/smart-garden-gateway-yocto-meta-mediatek.git
 [submodule "yocto/meta-readonly-rootfs-overlay"]
 	path = yocto/meta-readonly-rootfs-overlay
-	url = ../smart-garden-gateway-yocto-meta-readonly-rootfs-overlay.git
+	url = ../../husqvarnagroup/smart-garden-gateway-yocto-meta-readonly-rootfs-overlay.git
 [submodule "yocto/meta-swupdate"]
 	path = yocto/meta-swupdate
-	url = ../smart-garden-gateway-yocto-meta-swupdate.git
+	url = ../../husqvarnagroup/smart-garden-gateway-yocto-meta-swupdate.git
 [submodule "yocto/openembedded-core"]
 	path = yocto/openembedded-core
-	url = ../smart-garden-gateway-yocto-openembedded-core.git
+	url = ../../husqvarnagroup/smart-garden-gateway-yocto-openembedded-core.git
 [submodule "yocto/bitbake"]
 	path = yocto/bitbake
-	url = ../smart-garden-gateway-yocto-bitbake.git
+	url = ../../husqvarnagroup/smart-garden-gateway-yocto-bitbake.git
 [submodule "yocto/meta-lemonbeat-firmware"]
 	path = yocto/meta-lemonbeat-firmware
-	url = ../smart-garden-gateway-yocto-meta-lemonbeat-firmware-public.git
+	url = ../../husqvarnagroup/smart-garden-gateway-yocto-meta-lemonbeat-firmware-public.git
