@@ -27,7 +27,6 @@ build script, as well as submodules in the following structure
     * ```/yocto/meta-mediatek``` – the MediaTek Board Support Package (BSP)
     * ```/yocto/meta-distribution``` – our own distribution (specifies packages to install)
     * ```/yocto/meta-gardena``` – our own code (testing, WiFi provisioning, etc.)
-      communication between radio module and Seluxit OpenAPI
     * ```/yocto/meta-openembedded``` – Collection of layers for the OE-core universe
     * ```/yocto/meta-readonly-rootfs-overlay``` – Writable rootfs overlay on top of a read-only rootfs
     * ```/yocto/meta-swupdate``` – Update mechanism software
