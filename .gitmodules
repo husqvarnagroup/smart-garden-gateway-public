@@ -1,6 +1,6 @@
 [submodule "yocto/meta-openembedded"]
 	path = yocto/meta-openembedded
-	url = ../smart-garden-gateway-yocto-meta-openembedded
+	url = ../smart-garden-gateway-yocto-meta-openembedded.git
 [submodule "yocto/meta-gardena"]
 	path = yocto/meta-gardena
 	url = ../smart-garden-gateway-yocto-meta-gardena.git
