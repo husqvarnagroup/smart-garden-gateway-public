@@ -14,6 +14,7 @@ declare -A UPSTREAM_REPOS=(
     [yocto/openembedded-core]="smart-garden-gateway-yocto-openembedded-core.git"
     [yocto/bitbake]="smart-garden-gateway-yocto-bitbake.git"
     [yocto/meta-lemonbeat-firmware]="smart-garden-gateway-yocto-meta-lemonbeat-firmware-public.git"
+    [yocto/meta-rust]="smart-garden-gateway-yocto-meta-rust.git"
     [.]="smart-garden-gateway-public.git"
     )
 

@@ -25,3 +25,6 @@
 [submodule "yocto/meta-lemonbeat-firmware"]
 	path = yocto/meta-lemonbeat-firmware
 	url = ../smart-garden-gateway-yocto-meta-lemonbeat-firmware-public.git
+[submodule "yocto/meta-rust"]
+	path = yocto/meta-rust
+	url = ../smart-garden-gateway-yocto-meta-rust.git
