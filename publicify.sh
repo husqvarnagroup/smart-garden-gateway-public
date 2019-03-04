@@ -1,8 +1,14 @@
 #!/bin/bash
 
-# This script sets up the public repositories as additional remotes.
+# This script pushes a specific version (tag) to GitHub.
+#
+# Example: ./publicify.sh release/linux-system-3.3.0.2
 
-base="git@github.com:husqvarnagroup"
+set -eu -o pipefail
+
+readonly base="git@github.com:husqvarnagroup"
+
+release_tag=$1
 
 declare -A UPSTREAM_REPOS=(
     [yocto/meta-openembedded]="smart-garden-gateway-yocto-meta-openembedded.git"
@@ -23,3 +29,6 @@ for repo in "${!UPSTREAM_REPOS[@]}"; do
     echo "$repo"
     (cd "$scriptdir/$repo" && (git config --get remote.public.url || git remote add public "${base}/${UPSTREAM_REPOS[$repo]}"))
 done
+
+git submodule foreach "git push public \"${release_tag}\""
+git push public master "${release_tag}"
