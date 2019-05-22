@@ -7,6 +7,10 @@ git clone --recurse-submodules <repository>
 cd smart-garden-gateway-public
 ```
 
+Older versions of the build system can be found in the history. However, only for the most recent master we intend to ensure that the build works.
+
+Source code packages for all distributed versions can be found [here](https://opensource.smart.gardena.dev/gateway/index.html).
+
 ## Prerequisites
 
 * The Yocto build host packages need [to be installed](https://www.yoctoproject.org/docs/2.5.1/brief-yoctoprojectqs/brief-yoctoprojectqs.html#brief-build-system-packages)
