@@ -22,10 +22,7 @@ bitbake gardena-image-opensource-prod
 
 ## Repository Layout
 
-This repository is a container, which contains our documentation and
-build script, as well as submodules in the following structure
-
-* ```/yocto```
+* ```/``` Top level project
     * ```/yocto/bitbake``` – the Bitbake build tool
     * ```/yocto/openembedded-core``` – OpenEmbedded core layer
     * ```/yocto/meta-mediatek``` – the MediaTek Board Support Package (BSP)
