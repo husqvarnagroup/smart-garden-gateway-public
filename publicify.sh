@@ -6,7 +6,7 @@
 
 set -eu -o pipefail
 
-readonly base="git@github.com:husqvarnagroup"
+readonly base="git@github.com:rettichschnidi"
 
 release_tag=$1
 
@@ -27,8 +27,8 @@ declare -A UPSTREAM_REPOS=(
 scriptdir=$(dirname "$0")
 for repo in "${!UPSTREAM_REPOS[@]}"; do
     echo "$repo"
-    (cd "$scriptdir/$repo" && (git config --get remote.public.url || git remote add public "${base}/${UPSTREAM_REPOS[$repo]}"))
+    (cd "$scriptdir/$repo" && (git config --get remote.rs.url || git remote add rs "${base}/${UPSTREAM_REPOS[$repo]}"))
 done
 
-git submodule foreach "git push public \"${release_tag}\""
-git push public master "${release_tag}"
+git submodule foreach "git push rs \"${release_tag}\""
+git push rs master "${release_tag}"
