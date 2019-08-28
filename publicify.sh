@@ -27,7 +27,7 @@ declare -A PUBLIC_REPOS=(
 scriptdir=$(dirname "$0")
 for repo in "${!PUBLIC_REPOS[@]}"; do
     echo "$repo"
-    (cd "$scriptdir/$repo" && (git remote set-url public "${base}/${PUBLIC_REPOS[$repo]}" || remote add public "${base}/${PUBLIC_REPOS[$repo]}"))
+    (cd "$scriptdir/$repo" && (git remote set-url public "${base}/${PUBLIC_REPOS[$repo]}" || git remote add public "${base}/${PUBLIC_REPOS[$repo]}"))
 done
 
 git submodule foreach "git push public \"${release_tag}\""
