@@ -1,3 +1,8 @@
+# Foreword
+Please be aware that any modification to your gateway, in particular a modification of U-Boot, may permanently brick your device and is not covered by warranty.
+
+# Compiling the Software
+
 ## Obtaining the Source Code
 
 The source code of this project is maintained with git.
