@@ -42,3 +42,13 @@ bitbake gardena-image-opensource-prod
     * ```/yocto/meta-readonly-rootfs-overlay``` – Writable rootfs overlay on top of a read-only rootfs
     * ```/yocto/meta-swupdate``` – Update mechanism software
     * ```/yocto/meta-atmel``` – our Atmel Board Support Package (BSP), used only for Art. No. 19000
+
+# Getting access
+
+## Art. No. 19005
+The serial port can be found on [J7](doc/19005-pins.jpg). Settings are 115200 8N1, the level is 3.3V.
+
+Once connected, simply follow the instructions printed during startup.
+
+## Art. No. 19000
+We do not provide (yet!) any help rooting this device. The internet however does.
