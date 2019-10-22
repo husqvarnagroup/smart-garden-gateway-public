@@ -18,11 +18,10 @@ Source code packages for all distributed versions can be found [here](https://op
 ## Build Instructions
 Set TEMPLATECONF, initiate build directory and run bitbake.
 
-
 ### Article Number 19005 (MediaTek MT7688)
 ```bash
 export TEMPLATECONF=${PWD}/yocto/meta-distribution/conf
-source yocto/openembedded-core/oe-init-build-env build-gardena
+source yocto/openembedded-core/oe-init-build-env build-mt7688
 bitbake gardena-image-opensource-prod
 ```
 
