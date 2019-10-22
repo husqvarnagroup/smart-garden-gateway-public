@@ -25,3 +25,6 @@
 [submodule "yocto/meta-rust"]
 	path = yocto/meta-rust
 	url = ../smart-garden-gateway-yocto-meta-rust.git
+[submodule "yocto/meta-atmel"]
+	path = yocto/meta-atmel
+	url = ../smart-garden-gateway-yocto-meta-atmel.git

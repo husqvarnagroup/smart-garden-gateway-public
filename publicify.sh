@@ -21,6 +21,7 @@ declare -A PUBLIC_REPOS=(
     [yocto/openembedded-core]="smart-garden-gateway-yocto-openembedded-core.git"
     [yocto/bitbake]="smart-garden-gateway-yocto-bitbake.git"
     [yocto/meta-rust]="smart-garden-gateway-yocto-meta-rust.git"
+    [yocto/meta-atmel]="smart-garden-gateway-yocto-meta-atmel.git"
     [.]="smart-garden-gateway-public.git"
     )
 
