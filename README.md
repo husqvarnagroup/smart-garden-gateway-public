@@ -18,6 +18,8 @@ Source code packages for all distributed versions can be found [here](https://op
 ## Build Instructions
 Set TEMPLATECONF, initiate build directory and run bitbake.
 
+
+### Article Number 19005 (MediaTek MT7688)
 ```bash
 export TEMPLATECONF=${PWD}/yocto/meta-distribution/conf
 source yocto/openembedded-core/oe-init-build-env build-gardena
@@ -26,12 +28,13 @@ bitbake gardena-image-opensource-prod
 
 ## Repository Layout
 
-* ```/``` Top level project
+* ```/``` Top level project.
     * ```/yocto/bitbake``` – the Bitbake build tool
     * ```/yocto/openembedded-core``` – OpenEmbedded core layer
-    * ```/yocto/meta-mediatek``` – the MediaTek Board Support Package (BSP)
+    * ```/yocto/meta-mediatek``` – the MediaTek Board Support Package (BSP), used only for Art. No. 19005
     * ```/yocto/meta-distribution``` – our own distribution (specifies packages to install)
     * ```/yocto/meta-gardena``` – our own code (testing, WiFi provisioning, etc.)
     * ```/yocto/meta-openembedded``` – Collection of layers for the OE-core universe
     * ```/yocto/meta-readonly-rootfs-overlay``` – Writable rootfs overlay on top of a read-only rootfs
     * ```/yocto/meta-swupdate``` – Update mechanism software
+    * ```/yocto/meta-atmel``` – our Atmel Board Support Package (BSP), used only for Art. No. 19000
