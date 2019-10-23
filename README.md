@@ -46,7 +46,9 @@ bitbake gardena-image-opensource-prod
 # Getting access
 
 ## Art. No. 19005
-The serial port can be found on [J7](doc/19005-pins.jpg). Settings are 115200 8N1, the level is 3.3V.
+The serial port can be found on J7. Settings are 115200 8N1, the level is 3.3V.
+
+![PCBA](doc/19005-pins.jpg)
 
 Once connected, simply follow the instructions printed during startup.
 
