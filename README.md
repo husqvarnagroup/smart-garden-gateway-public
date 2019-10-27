@@ -21,13 +21,10 @@ Source code packages for all distributed versions can be found [here](https://op
 * The Yocto build host packages need [to be installed](https://www.yoctoproject.org/docs/2.5.1/brief-yoctoprojectqs/brief-yoctoprojectqs.html#brief-build-system-packages)
 
 ## Build Instructions
-Set TEMPLATECONF, initiate build directory and run bitbake.
 
 ### Article Number 19005 (MediaTek MT7688)
 ```bash
-export TEMPLATECONF=${PWD}/yocto/meta-distribution/conf
-source yocto/openembedded-core/oe-init-build-env build-mt7688
-bitbake gardena-image-opensource-prod
+scripts/bbwrapper.sh mt7688 gardena-image-opensource-prod
 ```
 
 ## Repository Layout

@@ -42,14 +42,14 @@ jobs:
               wget \
               ;
       - run:
-          name: Build Open Source Image
+          name: Build Open Source Image for MT7688
           command: |
             TEMPLATECONF="${PWD}/yocto/meta-distribution/conf"
-            . yocto/openembedded-core/oe-init-build-env build-gardena
+            . yocto/openembedded-core/oe-init-build-env build-mt7688
             echo 'BB_NUMBER_THREADS = "8"' > conf/site.conf
             echo 'PARALLEL_MAKE = "-j 8"' >> conf/site.conf
-            bitbake gardena-image-opensource-prod
-            bitbake package-index
+            ../scripts/bbwrapper.sh mt7688 gardena-image-opensource-prod
+            ../scripts/bbwrapper.sh mt7688 package-index
       - store_artifacts:
           path: build-gardena/tmp/deploy/
 workflows:
