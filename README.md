@@ -25,9 +25,7 @@ Set TEMPLATECONF, initiate build directory and run bitbake.
 
 ### Article Number 19005 (MediaTek MT7688)
 ```bash
-export TEMPLATECONF=${PWD}/yocto/meta-distribution/conf
-source yocto/openembedded-core/oe-init-build-env build-mt7688
-bitbake gardena-image-opensource-prod
+scripts/bbwrapper.sh mt7688 gardena-image-opensource-prod
 ```
 
 ## Repository Layout
