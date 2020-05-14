@@ -8,6 +8,11 @@
 
 set -eu -o pipefail
 
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+    echo "Usage: $0 tag [github username]" >&2
+    exit 1
+fi
+
 readonly release_tag=$1
 readonly base="git@github.com:${2-husqvarnagroup}"
 
