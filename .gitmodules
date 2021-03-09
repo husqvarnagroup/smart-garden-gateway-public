@@ -28,3 +28,6 @@
 [submodule "yocto/meta-atmel"]
 	path = yocto/meta-atmel
 	url = ../smart-garden-gateway-yocto-meta-atmel.git
+[submodule "yocto/meta-aws"]
+	path = yocto/meta-aws
+	url = ../smart-garden-gateway-yocto-meta-aws.git

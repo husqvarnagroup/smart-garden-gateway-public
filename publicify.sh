@@ -20,6 +20,7 @@ declare -A PUBLIC_REPOS=(
     [.]="smart-garden-gateway-public.git"
     [yocto/bitbake]="smart-garden-gateway-yocto-bitbake.git"
     [yocto/meta-atmel]="smart-garden-gateway-yocto-meta-atmel.git"
+    [yocto/meta-aws]="smart-garden-gateway-yocto-meta-aws.git"
     [yocto/meta-distribution]="smart-garden-gateway-yocto-meta-distribution.git"
     [yocto/meta-gardena]="smart-garden-gateway-yocto-meta-gardena.git"
     [yocto/meta-gardena-incubator]="smart-garden-gateway-yocto-meta-gardena-incubator.git"
