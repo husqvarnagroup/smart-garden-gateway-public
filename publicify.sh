@@ -17,17 +17,17 @@ readonly release_tag=$1
 readonly base="git@github.com:${2-husqvarnagroup}"
 
 declare -A PUBLIC_REPOS=(
-    [yocto/meta-openembedded]="smart-garden-gateway-yocto-meta-openembedded.git"
-    [yocto/meta-gardena]="smart-garden-gateway-yocto-meta-gardena.git"
+    [.]="smart-garden-gateway-public.git"
+    [yocto/bitbake]="smart-garden-gateway-yocto-bitbake.git"
+    [yocto/meta-atmel]="smart-garden-gateway-yocto-meta-atmel.git"
     [yocto/meta-distribution]="smart-garden-gateway-yocto-meta-distribution.git"
+    [yocto/meta-gardena]="smart-garden-gateway-yocto-meta-gardena.git"
     [yocto/meta-mediatek]="smart-garden-gateway-yocto-meta-mediatek.git"
+    [yocto/meta-openembedded]="smart-garden-gateway-yocto-meta-openembedded.git"
     [yocto/meta-readonly-rootfs-overlay]="smart-garden-gateway-yocto-meta-readonly-rootfs-overlay.git"
+    [yocto/meta-rust]="smart-garden-gateway-yocto-meta-rust.git"
     [yocto/meta-swupdate]="smart-garden-gateway-yocto-meta-swupdate.git"
     [yocto/openembedded-core]="smart-garden-gateway-yocto-openembedded-core.git"
-    [yocto/bitbake]="smart-garden-gateway-yocto-bitbake.git"
-    [yocto/meta-rust]="smart-garden-gateway-yocto-meta-rust.git"
-    [yocto/meta-atmel]="smart-garden-gateway-yocto-meta-atmel.git"
-    [.]="smart-garden-gateway-public.git"
     )
 
 scriptdir=$(dirname "$0")
