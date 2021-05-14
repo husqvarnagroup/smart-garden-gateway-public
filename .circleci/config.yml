@@ -48,7 +48,7 @@ jobs:
             . yocto/openembedded-core/oe-init-build-env build-mt7688
             echo 'BB_NUMBER_THREADS = "4"' > conf/site.conf
             echo 'PARALLEL_MAKE = "-j 4"' >> conf/site.conf
-            ../scripts/bbwrapper.sh mt7688 gardena-image-opensource-prod
+            ../scripts/bbwrapper.sh mt7688 gardena-image-opensource-prod linux-yocto-tiny u-boot
             ../scripts/bbwrapper.sh mt7688 package-index
       - store_artifacts:
           path: build-gardena/tmp/deploy/
