@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: rettichschnidi4circleci/smart-garden-gateway
+      - image: rettichschnidi4circleci/smart-garden-gateway:buster
         user: build
     steps:
       - run:
