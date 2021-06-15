@@ -23,7 +23,6 @@ declare -A PUBLIC_REPOS=(
     [yocto/meta-aws]="smart-garden-gateway-yocto-meta-aws.git"
     [yocto/meta-distribution]="smart-garden-gateway-yocto-meta-distribution.git"
     [yocto/meta-gardena]="smart-garden-gateway-yocto-meta-gardena.git"
-    [yocto/meta-gardena-incubator]="smart-garden-gateway-yocto-meta-gardena-incubator.git"
     [yocto/meta-mediatek]="smart-garden-gateway-yocto-meta-mediatek.git"
     [yocto/meta-openembedded]="smart-garden-gateway-yocto-meta-openembedded.git"
     [yocto/meta-readonly-rootfs-overlay]="smart-garden-gateway-yocto-meta-readonly-rootfs-overlay.git"
