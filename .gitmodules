@@ -1,33 +1,33 @@
 [submodule "yocto/meta-openembedded"]
 	path = yocto/meta-openembedded
-	url = ../smart-garden-gateway-yocto-meta-openembedded.git
+	url = ../smart-garden-gateway-yocto-meta-openembedded
 [submodule "yocto/meta-gardena"]
 	path = yocto/meta-gardena
-	url = ../smart-garden-gateway-yocto-meta-gardena.git
+	url = ../smart-garden-gateway-yocto-meta-gardena
 [submodule "yocto/meta-distribution"]
 	path = yocto/meta-distribution
-	url = ../smart-garden-gateway-yocto-meta-distribution.git
+	url = ../smart-garden-gateway-yocto-meta-distribution
 [submodule "yocto/meta-mediatek"]
 	path = yocto/meta-mediatek
-	url = ../smart-garden-gateway-yocto-meta-mediatek.git
+	url = ../smart-garden-gateway-yocto-meta-mediatek
 [submodule "yocto/meta-readonly-rootfs-overlay"]
 	path = yocto/meta-readonly-rootfs-overlay
-	url = ../smart-garden-gateway-yocto-meta-readonly-rootfs-overlay.git
+	url = ../smart-garden-gateway-yocto-meta-readonly-rootfs-overlay
 [submodule "yocto/meta-swupdate"]
 	path = yocto/meta-swupdate
-	url = ../smart-garden-gateway-yocto-meta-swupdate.git
+	url = ../smart-garden-gateway-yocto-meta-swupdate
 [submodule "yocto/openembedded-core"]
 	path = yocto/openembedded-core
-	url = ../smart-garden-gateway-yocto-openembedded-core.git
+	url = ../smart-garden-gateway-yocto-openembedded-core
 [submodule "yocto/bitbake"]
 	path = yocto/bitbake
-	url = ../smart-garden-gateway-yocto-bitbake.git
+	url = ../smart-garden-gateway-yocto-bitbake
 [submodule "yocto/meta-rust"]
 	path = yocto/meta-rust
-	url = ../smart-garden-gateway-yocto-meta-rust.git
+	url = ../smart-garden-gateway-yocto-meta-rust
 [submodule "yocto/meta-atmel"]
 	path = yocto/meta-atmel
-	url = ../smart-garden-gateway-yocto-meta-atmel.git
+	url = ../smart-garden-gateway-yocto-meta-atmel
 [submodule "yocto/meta-aws"]
 	path = yocto/meta-aws
-	url = ../smart-garden-gateway-yocto-meta-aws.git
+	url = ../smart-garden-gateway-yocto-meta-aws
