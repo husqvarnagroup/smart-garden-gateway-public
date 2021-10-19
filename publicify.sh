@@ -38,4 +38,4 @@ for repo in "${!PUBLIC_REPOS[@]}"; do
 done
 
 git submodule foreach "git push public \"${release_tag}\""
-git push public master "${release_tag}"
+git push public main "${release_tag}"
