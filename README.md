@@ -53,7 +53,7 @@ The serial port can be found on J7. Settings are 115200 8N1, the level is 3.3V.
 
 Once connected, simply follow the instructions printed during startup.
 
-Alternatively, right after powering up a gateway, pressing any key will grant access to the U-Boot shell.
+Alternatively, right after powering up a gateway, pressing the 'X' key will grant access to the U-Boot shell.
 
 ## Art. No. 19000
 We do not provide (yet!) any help rooting this device. The internet however does.
