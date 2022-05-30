@@ -22,7 +22,7 @@ Source code packages for all distributed versions can be found [here](https://op
 
 ## Prerequisites
 
-* The Yocto build host packages need [to be installed](https://www.yoctoproject.org/docs/2.5.1/brief-yoctoprojectqs/brief-yoctoprojectqs.html#brief-build-system-packages)
+* The Yocto build host packages need [to be installed](https://docs.yoctoproject.org/dev/ref-manual/system-requirements.html?highlight=build%20host%20package#required-packages-for-the-build-host)
 
 ## Build Instructions
 
