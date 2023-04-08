@@ -51,17 +51,19 @@ scripts/bbwrapper.sh at91sam gardena-image-opensource-prod linux-yocto-tiny
 
 # Getting access
 
-## Art. No. 19005
-The serial port can be found on J7. Settings are 115200 8N1, the level is 3.3V.
-
-![PCBA](doc/19005-pins.jpg)
+On both versions of the gateway, the UART port can be found on J7. Settings are 115200 8N1, the level is 3.3V.
 
 Once connected, simply follow the instructions printed during startup.
 
 Alternatively, right after powering up a gateway, pressing the 'X' key will grant access to the U-Boot shell.
 
+## Art. No. 19005
+
+![PCBA](doc/19005-pins.jpg)
+
 ## Art. No. 19000
-We do not provide (yet!) any help rooting this device. The internet however does.
+
+![PCBA](doc/19000-pins.jpg)
 
 # Flashing
 
