@@ -31,7 +31,7 @@ Source code packages for all distributed versions can be found [here](https://op
 scripts/bbwrapper.sh mt7688 gardena-image-opensource-prod linux-yocto-tiny
 ```
 
-### Article Number 1900 (Atmel AT91SAM)
+### Article Number 19000 (Atmel AT91SAM)
 ```bash
 scripts/bbwrapper.sh at91sam gardena-image-opensource-prod linux-yocto-tiny
 ```
