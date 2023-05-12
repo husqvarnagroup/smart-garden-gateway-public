@@ -17,6 +17,9 @@ jobs:
         submodules: true
         fetch-depth: 0
 
+    - name: Generate locales
+      run: sudo locale-gen en_US.UTF-8
+
     - name: Install Yocto dependencies
       run: |
         sudo apt update && sudo apt -qy --no-install-recommends install \
