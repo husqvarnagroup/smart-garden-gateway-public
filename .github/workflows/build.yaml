@@ -54,7 +54,7 @@ jobs:
 
     - name: Build Open Source components
       run: |
-        scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-opensource-prod linux-yocto-tiny u-boot
+        scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
         scripts/bbwrapper.sh ${{ matrix.machine }} package-index
 
     - name: Upload artifacts
