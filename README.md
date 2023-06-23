@@ -1,5 +1,7 @@
 # Foreword
-Please be aware that any modification to your gateway, in particular a modification of U-Boot, may permanently brick your device and is not covered by warranty.
+
+Please be aware that any modification to your gateway, in particular a modification of U-Boot, may permanently brick
+your device and is not covered by warranty.
 
 # Compiling the Software
 
@@ -16,7 +18,8 @@ Optionally, specific versions can be checked out (5.5.1 in this case):
 git checkout release/linux-system-5.5.1
 ```
 
-Older versions of the build system can be found in the history. However, only for the most recent master we intend to ensure that the build works.
+Older versions of the build system can be found in the history. However, only for the most recent master we intend to
+ensure that the build works.
 
 Source code packages for all distributed versions can be found [here](https://opensource.smart.gardena.dev/gateway/index.html).
 
@@ -27,11 +30,13 @@ Source code packages for all distributed versions can be found [here](https://op
 ## Build Instructions
 
 ### Article Number 19005 (MediaTek MT7688)
+
 ```bash
 scripts/bbwrapper.sh mt7688 gardena-image-opensource-prod linux-yocto-tiny
 ```
 
 ### Article Number 19000 (Atmel AT91SAM)
+
 ```bash
 scripts/bbwrapper.sh at91sam gardena-image-opensource-prod linux-yocto-tiny
 ```
@@ -83,6 +88,7 @@ work:
 - Restart gateway: `reset`
 
 ## Proprietary Bits
+
 It is possible to install the proprietary packages via OPKG by doing the following on the Linux shell:
 - Adjust OPKG feeds to your gateway \<version>:
   ```bash
