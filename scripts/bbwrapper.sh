@@ -25,18 +25,21 @@ DISTRO_VERSION_ID="$(git describe --dirty --match release/linux-system* | cut -c
 DISTRO_VERSION="$(echo "${DISTRO_VERSION_ID}" | egrep -o '[0-9]+\.[0-9]+\.[0-9]+' )"
 DISTRO_UPDATE_URL="${DISTRO_UPDATE_URL:-http://10.42.0.1:8000/gardena-update-image-prod-gardena-sg-${MACHINE}.swu}"
 DISTRO_UPDATE_URL_BASE="${DISTRO_UPDATE_URL_BASE:-http://gateway.iot.sg.dss.husqvarnagroup.net/images}"
+PACKAGE_FEED_URIS="${PACKAGE_FEED_URIS:-http://gateway.iot.sg.dss.husqvarnagroup.net/archive/${DISTRO_VERSION}/gardena-sg-${MACHINE}}"
 
 BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE \
   DISTRO_UPDATE_URL \
   DISTRO_UPDATE_URL_BASE \
   DISTRO_VERSION \
   DISTRO_VERSION_ID \
+  PACKAGE_FEED_URIS \
 "
 export \
   BB_ENV_EXTRAWHITE \
   DISTRO_UPDATE_URL \
   DISTRO_UPDATE_URL_BASE \
   DISTRO_VERSION \
-  DISTRO_VERSION_ID
+  DISTRO_VERSION_ID \
+  PACKAGE_FEED_URIS
 
 exec bitbake "${@:2}"
