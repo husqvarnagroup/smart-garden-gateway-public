@@ -122,3 +122,23 @@ It is possible to install the proprietary packages via OPKG by doing the followi
 > **Note**:
 > The read-write filesystem is (currently) not large enough to contain all the above packages. It is possible to resize
 > the UBI volumes. However, that must be done with great care.
+
+## Restoring the Official Image
+
+Unless the above instructions have been performed multiple times, reverting back to the official image is as simple as
+booting the previously used boot slot (from Linux):
+```bash
+fw_setenv update_url  # Re-enable automatic updates
+fw_setenv bootslot $(( 1 - $(fw_printenv -n bootslot) ))
+reboot
+```
+
+To install the official image through TFTP, fetch the files for the [latest release][1] from our server, e.g.
+
+- http://gateway.iot.sg.dss.husqvarnagroup.net/archive/7.17.4/gardena-sg-mt7688/images/fitImage-gardena-sg-mt7688.bin
+- http://gateway.iot.sg.dss.husqvarnagroup.net/archive/7.17.4/gardena-sg-mt7688/images/gardena-image-bnw-gardena-sg-mt7688.squashfs-xz
+
+and follow the instructions in [Installing a Custom Image](#installing-a-custom-image). But, make sure you
+reference the correct rootfs file as the names differ.
+
+[1]: https://github.com/husqvarnagroup/smart-garden-gateway-public/tags
