@@ -72,36 +72,39 @@ Alternatively, right after powering up a gateway, pressing the 'X' key will gran
 
 # Flashing
 
+## Installing a Custom Image
+
 The easiest way to install a self-built kernel and rootfs is to fetch the images over the network from within U-Boot,
 using TFTP.
 
 Ideally, the TFTP server (e.g. [tftp-hpa](https://git.kernel.org/pub/scm/network/tftp/tftp-hpa.git)) and the DHCP server
 (e.g. [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html)) run on the same machine, allowing the following steps to
-work.
+work:
 
-## Article Number 19005 (MediaTek MT7688)
+- Select the other boot slot: `run do_toggle_bootslot`
+- Prevent "updates" to proprietary image: `env set update_url updates-disabled`
+  (run `env set update_url && env save` to re-enable updates)
+- Write environment to flash storage: `env save`
+- Fetch kernel and rootfs over TFTP and write it to flash storage:
 
-- Attach UBI device: `ubi part nand`
-- Fetch kernel and rootfs via TFTP, store it in the active UBI partitions:
-  - `dhcp fitImage-gardena-sg-mt7688.bin && ubi write ${fileaddr} kernel${bootslot} ${filesize}`
-  - `dhcp gardena-image-foss-bnw-gardena-sg-mt7688.squashfs-xz && ubi write ${fileaddr} rootfs${bootslot} ${filesize}`
-- Prevent "updates" to proprietary image: `env set update_url updates-disabled && saveenv`
-  (run `env set update_url && saveenv` to re-enable updates)
-- Restart gateway: `reset`
+  **Article Number 19005 (MediaTek MT7688)**
+  ```
+  ubi part nand
+  dhcp fitImage-gardena-sg-mt7688.bin && ubi write ${fileaddr} kernel${bootslot} ${filesize}
+  dhcp gardena-image-foss-bnw-gardena-sg-mt7688.squashfs-xz && ubi write ${fileaddr} rootfs${bootslot} ${filesize}
+  ```
 
-## Article Number 19000 (Atmel AT91SAM)
+  **Article Number 19000 (Atmel AT91SAM)**
+  ```
+  ubi part ubi
+  dhcp fitImage-gardena-sg-at91sam.bin && ubi write ${fileaddr} kernel${bootslot} ${filesize}
+  dhcp gardena-image-foss-bnw-gardena-sg-at91sam.squashfs-xz && ubi write ${fileaddr} rootfs${bootslot} ${filesize}
+  ```
+- Restart the gateway: `reset`
 
-- Attach UBI device: `ubi part ubi`
-- Fetch kernel and rootfs via TFTP, store it in the active UBI partitions:
-  - `dhcp fitImage-gardena-sg-at91sam.bin && ubi write ${fileaddr} kernel${bootslot} ${filesize}`
-  - `dhcp gardena-image-foss-bnw-gardena-sg-at91sam.squashfs-xz && ubi write ${fileaddr} rootfs${bootslot} ${filesize}`
-- Prevent "updates" to proprietary image: `env set update_url updates-disabled && saveenv`
-  (run `env set update_url && saveenv` to re-enable updates)
-- Restart gateway: `reset`
+## Adding the Proprietary Bits
 
-## Proprietary Bits
-
-It is possible to install the proprietary packages via OPKG by doing the following on the Linux shell:
+It is possible to install the proprietary packages via OPKG by doing the following in the Linux shell:
 - Update the OPKG feeds: `opkg update`
 - Install the packages:
   ```bash
