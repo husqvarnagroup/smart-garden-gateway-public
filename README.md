@@ -119,7 +119,7 @@ It is possible to install the proprietary packages via OPKG by doing the followi
   ```
 - Reboot gateway: `reboot`
 
-> **Note**:
+> [!NOTE]
 > The read-write filesystem is (currently) not large enough to contain all the above packages. It is possible to resize
 > the UBI volumes. However, that must be done with great care.
 
