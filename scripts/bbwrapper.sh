@@ -21,7 +21,7 @@ if ! type bitbake >/dev/null 2>&1; then
 fi
 
 # Using git and annotated tags in the form or release/linux-system-X.Y.Z[-suffix] to determine the distribution version.
-DISTRO_VERSION_ID="$(git describe --dirty --match release/linux-system* | cut -c 22-)"
+DISTRO_VERSION_ID="$(git describe --tags --dirty --match release/linux-system* | cut -c 22-)"
 DISTRO_VERSION="$(echo "${DISTRO_VERSION_ID}" | egrep -o '[0-9]+\.[0-9]+\.[0-9]+' )"
 DISTRO_UPDATE_URL="${DISTRO_UPDATE_URL:-http://10.42.0.1:8000/gardena-update-image-prod-gardena-sg-${MACHINE}.swu}"
 DISTRO_UPDATE_URL_BASE="${DISTRO_UPDATE_URL_BASE:-http://gateway.iot.sg.dss.husqvarnagroup.net/images}"
