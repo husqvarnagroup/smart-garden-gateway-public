@@ -3,7 +3,7 @@ name: Build Open Source Components
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
 
 jobs:
@@ -15,56 +15,56 @@ jobs:
         machine: ["mt7688", "at91sam"]
 
     steps:
-    - name: Checkout code including full history and submodules
-      uses: actions/checkout@v3
-      with:
-        submodules: true
-        fetch-depth: 0
+      - name: Checkout code including full history and submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
 
-    - name: Generate locales
-      run: sudo locale-gen en_US.UTF-8
+      - name: Generate locales
+        run: sudo locale-gen en_US.UTF-8
 
-    - name: Install Yocto dependencies
-      run: |
-        sudo apt update && sudo apt -qy --no-install-recommends install \
-          build-essential \
-          chrpath \
-          cpio \
-          debianutils \
-          diffstat \
-          gawk \
-          gcc-multilib \
-          git-core \
-          iputils-ping \
-          libegl1-mesa \
-          libsdl1.2-dev \
-          lz4 \
-          pylint \
-          python3 \
-          python3-git \
-          python3-jinja2 \
-          python3-pexpect \
-          python3-pip \
-          socat \
-          texinfo \
-          unzip \
-          wget \
-          xterm \
-          xz-utils \
-          ;
+      - name: Install Yocto dependencies
+        run: |
+          sudo apt update && sudo apt -qy --no-install-recommends install \
+            build-essential \
+            chrpath \
+            cpio \
+            debianutils \
+            diffstat \
+            gawk \
+            gcc-multilib \
+            git-core \
+            iputils-ping \
+            libegl1-mesa \
+            libsdl1.2-dev \
+            lz4 \
+            pylint \
+            python3 \
+            python3-git \
+            python3-jinja2 \
+            python3-pexpect \
+            python3-pip \
+            socat \
+            texinfo \
+            unzip \
+            wget \
+            xterm \
+            xz-utils \
+            ;
 
-    - name: Build Open Source components
-      run: |
-        scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
-        scripts/bbwrapper.sh ${{ matrix.machine }} package-index
+      - name: Build Open Source components
+        run: |
+          scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
+          scripts/bbwrapper.sh ${{ matrix.machine }} package-index
 
-    # Ignoring spdx/by-* folders because the action can not deal with colons in
-    # file names
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: Build artifacts (${{ matrix.machine }})
-        path: |
-          build-${{ matrix.machine }}/tmp/deploy
-          !build-${{ matrix.machine }}/tmp/deploy/spdx/by-hash
-          !build-${{ matrix.machine }}/tmp/deploy/spdx/by-namespace
+      # Ignoring spdx/by-* folders because the action can not deal with colons in
+      # file names
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build artifacts (${{ matrix.machine }})
+          path: |
+            build-${{ matrix.machine }}/tmp/deploy
+            !build-${{ matrix.machine }}/tmp/deploy/spdx/by-hash
+            !build-${{ matrix.machine }}/tmp/deploy/spdx/by-namespace
