@@ -82,8 +82,6 @@ Ideally, the TFTP server (e.g. [tftp-hpa](https://git.kernel.org/pub/scm/network
 work:
 
 - Select the other boot slot: `run do_toggle_bootslot`
-- Prevent "updates" to proprietary image: `env set update_url updates-disabled`
-  (run `env set update_url && env save` to re-enable updates)
 - Write environment to flash storage: `env save`
 - Fetch kernel and rootfs over TFTP and write it to flash storage:
 
@@ -128,7 +126,6 @@ It is possible to install the proprietary packages via OPKG by doing the followi
 Unless the above instructions have been performed multiple times, reverting back to the official image is as simple as
 booting the previously used boot slot (from Linux):
 ```bash
-fw_setenv update_url  # Re-enable automatic updates
 fw_setenv bootslot $(( 1 - $(fw_printenv -n bootslot) ))
 reboot
 ```
