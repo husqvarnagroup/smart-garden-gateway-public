@@ -7,9 +7,6 @@
 [submodule "yocto/meta-distribution"]
 	path = yocto/meta-distribution
 	url = ../smart-garden-gateway-yocto-meta-distribution
-[submodule "yocto/meta-mediatek"]
-	path = yocto/meta-mediatek
-	url = ../smart-garden-gateway-yocto-meta-mediatek
 [submodule "yocto/meta-readonly-rootfs-overlay"]
 	path = yocto/meta-readonly-rootfs-overlay
 	url = ../smart-garden-gateway-yocto-meta-readonly-rootfs-overlay
@@ -22,12 +19,6 @@
 [submodule "yocto/bitbake"]
 	path = yocto/bitbake
 	url = ../smart-garden-gateway-yocto-bitbake
-[submodule "yocto/meta-rust"]
-	path = yocto/meta-rust
-	url = ../smart-garden-gateway-yocto-meta-rust
-[submodule "yocto/meta-atmel"]
-	path = yocto/meta-atmel
-	url = ../smart-garden-gateway-yocto-meta-atmel
 [submodule "yocto/meta-aws"]
 	path = yocto/meta-aws
 	url = ../smart-garden-gateway-yocto-meta-aws

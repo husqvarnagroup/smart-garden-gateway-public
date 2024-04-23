@@ -14,7 +14,7 @@ cd "$gitroot"
 
 # If BitBake (and therefore the build directory) was not set up before, then do it now.
 if ! type bitbake >/dev/null 2>&1; then
-  TEMPLATECONF="${gitroot}/yocto/meta-distribution/conf"
+  TEMPLATECONF="${gitroot}/yocto/meta-distribution/conf/templates/default"
   export TEMPLATECONF
   source yocto/openembedded-core/oe-init-build-env "${BUILD_DIR}"
   sed -i 's/\(^MACHINE ??= "\).*\(".*\)/\1'gardena-sg-${MACHINE}'\2/g' conf/local.conf
@@ -27,7 +27,7 @@ DISTRO_UPDATE_URL="${DISTRO_UPDATE_URL:-http://10.42.0.1:8000/gardena-update-ima
 DISTRO_UPDATE_URL_BASE="${DISTRO_UPDATE_URL_BASE:-http://gateway.iot.sg.dss.husqvarnagroup.net/images}"
 PACKAGE_FEED_URIS="${PACKAGE_FEED_URIS:-http://gateway.iot.sg.dss.husqvarnagroup.net/archive/${DISTRO_VERSION}/gardena-sg-${MACHINE}}"
 
-BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE \
+BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS \
   DISTRO_UPDATE_URL \
   DISTRO_UPDATE_URL_BASE \
   DISTRO_VERSION \
@@ -35,7 +35,7 @@ BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE \
   PACKAGE_FEED_URIS \
 "
 export \
-  BB_ENV_EXTRAWHITE \
+  BB_ENV_PASSTHROUGH_ADDITIONS \
   DISTRO_UPDATE_URL \
   DISTRO_UPDATE_URL_BASE \
   DISTRO_VERSION \

@@ -38,6 +38,7 @@ jobs:
           iputils-ping \
           libegl1-mesa \
           libsdl1.2-dev \
+          lz4 \
           pylint \
           python3 \
           python3-git \
