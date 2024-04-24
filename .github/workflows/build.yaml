@@ -57,8 +57,13 @@ jobs:
         scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
         scripts/bbwrapper.sh ${{ matrix.machine }} package-index
 
+    # Ignoring spdx/by-* folders because the action can not deal with colons in
+    # file names
     - name: Upload artifacts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: Build artifacts (${{ matrix.machine }})
-        path: build-${{ matrix.machine }}/tmp/deploy
+        path: |
+          build-${{ matrix.machine }}/tmp/deploy
+          !build-${{ matrix.machine }}/tmp/deploy/spdx/by-hash
+          !build-${{ matrix.machine }}/tmp/deploy/spdx/by-namespace
