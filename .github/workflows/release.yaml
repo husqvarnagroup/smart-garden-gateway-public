@@ -1,0 +1,27 @@
+on:
+  pull_request_target:
+    #types:
+    #  - closed
+    #branches:
+    #  - 'main'
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true && github.head_ref == 'specific-branch'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo $GITHUB_HEAD_REF
+
+      - name: Create Git tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if (process.env.GITHUB_HEAD_REF.startsWith("linux-system-")) {
+              github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'refs/tags/release/' + process.env.GITHUB_HEAD_REF,
+                sha: context.sha
+              });
+            }
