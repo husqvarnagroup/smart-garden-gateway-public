@@ -1,13 +1,15 @@
 name: Build Open Source Components
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     paths-ignore:
       - "README.md"
       - "doc/**"
+  workflow_run:
+    workflows:
+      - Release
+    types:
+      - completed
 
 jobs:
   build:
