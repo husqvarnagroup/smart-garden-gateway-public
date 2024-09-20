@@ -7,6 +7,9 @@ set -e -o pipefail
 MACHINE="$1"
 BUILD_DIR="build-${MACHINE}"
 
+# Allow the build-directory to be stored on a different Btrfs volume
+export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
+
 script_dir="$(dirname "$(readlink -f "$0")")"
 cd "${script_dir}"
 gitroot="$(git rev-parse --show-toplevel)"
