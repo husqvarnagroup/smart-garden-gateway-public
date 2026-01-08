@@ -17,18 +17,9 @@ jobs:
 
     strategy:
       matrix:
-        machine: ["mt7688", "at91sam"]
+        machine: ["mt7688"]
 
     steps:
-      - name: Checkout code including full history and submodules
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-          fetch-depth: 0
-
-      - name: Generate locales
-        run: sudo locale-gen en_US.UTF-8
-
       - name: Install Yocto dependencies
         run: |
           sudo apt update && sudo apt -qy --no-install-recommends install \
@@ -37,39 +28,31 @@ jobs:
             cpio \
             debianutils \
             diffstat \
+            file \
             gawk \
-            gcc-multilib \
-            git-core \
+            gcc \
+            git \
             iputils-ping \
-            libegl1-mesa \
-            libsdl1.2-dev \
-            lz4 \
-            pylint \
+            libacl1 \
+            liblz4-tool \
+            locales \
             python3 \
             python3-git \
             python3-jinja2 \
             python3-pexpect \
             python3-pip \
+            python3-subunit \
             socat \
             texinfo \
             unzip \
             wget \
-            xterm \
             xz-utils \
+            zstd \
             ;
+
+      - name: Generate locales
+        run: sudo locale-gen en_US.UTF-8
 
       - name: Build Open Source components
         run: |
-          scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
-          scripts/bbwrapper.sh ${{ matrix.machine }} package-index
-
-      # Ignoring spdx/by-* folders because the action can not deal with colons in
-      # file names
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build artifacts (${{ matrix.machine }})
-          path: |
-            build-${{ matrix.machine }}/tmp/deploy
-            !build-${{ matrix.machine }}/tmp/deploy/spdx/by-hash
-            !build-${{ matrix.machine }}/tmp/deploy/spdx/by-namespace
+          echo hello
