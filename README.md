@@ -54,17 +54,49 @@ scripts/bbwrapper.sh at91sam gardena-image-foss-bnw linux-yocto-tiny
 
 # Getting access
 
+## SSH
+
+You will need to determine the hostname of your gateway or get the IP address e.g. from the GARDENA app.
+
+The password is derived from the first eight characters of the ID printed on the bottom of the gateway.
+
+To authenticate with the gateway, run:
+```
+gateway=GARDENA-123456
+password=1234abcd
+
+session=$(curl -H 'Content-Type: application/json' -d '{"password": "'"$password"'"}' --insecure https://$gateway/login | jq -r .session)
+```
+
+Register your public key:
+```
+curl -X POST -H "X-session: $session" -H 'Content-Type: application/json' -d '{"key": "'"$(cat ~/.ssh/id_ed25519.pub)"'"}' --insecure https://$gateway/ssh_access_credentials
+
+```
+
+Enable SSH access:
+```
+curl -X PUT -H "X-session: $session" -H 'Content-Type: application/json' -d '{"enable": true}' --insecure https://$gateway/ssh_access_enable
+```
+
+Log into the gateway:
+```
+ssh root@$gateway
+```
+
+## UART
+
 On both versions of the gateway, the UART port can be found on J7. Settings are 115200 8N1, the level is 3.3V.
 
 Once connected, simply follow the instructions printed during startup.
 
 Alternatively, right after powering up a gateway, pressing the 'X' key will grant access to the U-Boot shell.
 
-## Art. No. 19005
+### Art. No. 19005
 
 ![PCBA](doc/19005-pins.jpg)
 
-## Art. No. 19000
+### Art. No. 19000
 
 ![PCBA](doc/19000-pins.jpg)
 
