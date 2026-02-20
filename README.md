@@ -31,13 +31,13 @@ Source code packages for all distributed versions can be found [here](https://op
 
 ### Article Number 19005 (MediaTek MT7688)
 
-```bash
+```
 scripts/bbwrapper.sh mt7688 gardena-image-foss-bnw linux-yocto-tiny
 ```
 
 ### Article Number 19000 (Atmel AT91SAM)
 
-```bash
+```
 scripts/bbwrapper.sh at91sam gardena-image-foss-bnw linux-yocto-tiny
 ```
 
@@ -103,7 +103,7 @@ work:
 It is possible to install the proprietary packages via OPKG by doing the following in the Linux shell:
 - Update the OPKG feeds: `opkg update`
 - Install the packages:
-  ```bash
+  ```
   opkg install \
       accessory-server \
       cloudadapter \
@@ -123,7 +123,7 @@ It is possible to install the proprietary packages via OPKG by doing the followi
 
 Unless the above instructions have been performed multiple times, reverting back to the official image is as simple as
 booting the previously used boot slot (from Linux):
-```bash
+```
 fw_setenv bootslot $(( 1 - $(fw_printenv -n bootslot) ))
 reboot
 ```
