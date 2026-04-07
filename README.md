@@ -13,9 +13,9 @@ The source code of this project is maintained with git.
 git clone --recurse-submodules <repository>
 cd smart-garden-gateway-public
 ```
-Optionally, specific versions can be checked out (7.8.1 in this case):
+Optionally, specific versions can be checked out (10.4.3 in this case):
 ```bash
-git checkout release/linux-system-7.8.1
+git checkout release/linux-system-10.4.3
 ```
 
 Older versions of the build system can be found in the history. However, only for the most recent master we intend to
@@ -162,8 +162,8 @@ reboot
 
 To install the official image through TFTP, fetch the files for the [latest release][1] from our server, e.g.
 
-- http://gateway.iot.sg.dss.husqvarnagroup.net/archive/7.17.4/gardena-sg-mt7688/images/fitImage-gardena-sg-mt7688.bin
-- http://gateway.iot.sg.dss.husqvarnagroup.net/archive/7.17.4/gardena-sg-mt7688/images/gardena-image-bnw-zephyr-gardena-sg-mt7688.squashfs-xz
+- http://gateway.iot.sg.dss.husqvarnagroup.net/archive/10.4.3/gardena-sg-mt7688/images/fitImage-gardena-sg-mt7688.bin
+- http://gateway.iot.sg.dss.husqvarnagroup.net/archive/10.4.3/gardena-sg-mt7688/images/gardena-image-bnw-zephyr-gardena-sg-mt7688.squashfs-xz
 
 and follow the instructions in [Installing a Custom Image](#installing-a-custom-image). But, make sure you
 reference the correct rootfs file as the names differ.
