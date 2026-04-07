@@ -163,7 +163,7 @@ reboot
 To install the official image through TFTP, fetch the files for the [latest release][1] from our server, e.g.
 
 - http://gateway.iot.sg.dss.husqvarnagroup.net/archive/7.17.4/gardena-sg-mt7688/images/fitImage-gardena-sg-mt7688.bin
-- http://gateway.iot.sg.dss.husqvarnagroup.net/archive/7.17.4/gardena-sg-mt7688/images/gardena-image-bnw-gardena-sg-mt7688.squashfs-xz
+- http://gateway.iot.sg.dss.husqvarnagroup.net/archive/7.17.4/gardena-sg-mt7688/images/gardena-image-bnw-zephyr-gardena-sg-mt7688.squashfs-xz
 
 and follow the instructions in [Installing a Custom Image](#installing-a-custom-image). But, make sure you
 reference the correct rootfs file as the names differ.
