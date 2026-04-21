@@ -74,3 +74,16 @@ jobs:
             build-${{ matrix.machine }}/tmp/deploy
             !build-${{ matrix.machine }}/tmp/deploy/spdx/SPDX-1.1/by-hash
             !build-${{ matrix.machine }}/tmp/deploy/spdx/SPDX-1.1/by-namespace
+
+      - name: Generate dependency graph for debugging
+        if: failure()
+        run: scripts/bbwrapper.sh ${{ matrix.machine }} -g gardena-image-foss-bnw || true
+
+      - name: Upload files for debugging build
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-debug-${{ matrix.machine }}
+          path: |
+            build-${{ matrix.machine }}/task-depends.dot
+            build-${{ matrix.machine }}/tmp/work/**/temp/log.*
