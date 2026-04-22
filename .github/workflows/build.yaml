@@ -5,11 +5,9 @@ on:
     paths-ignore:
       - "README.md"
       - "doc/**"
-  workflow_run:
-    workflows:
-      - Release
-    types:
-      - completed
+  push:
+    tags:
+      - "release/*"
 
 jobs:
   build:
