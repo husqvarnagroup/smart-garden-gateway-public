@@ -72,8 +72,8 @@ jobs:
           name: Build artifacts (${{ matrix.machine }})
           path: |
             build-${{ matrix.machine }}/tmp/deploy
-            !build-${{ matrix.machine }}/tmp/deploy/spdx/SPDX-1.1/by-hash
-            !build-${{ matrix.machine }}/tmp/deploy/spdx/SPDX-1.1/by-namespace
+            !build-${{ matrix.machine }}/tmp/deploy/spdx/*/by-hash
+            !build-${{ matrix.machine }}/tmp/deploy/spdx/*/by-namespace
 
       - name: Generate dependency graph for debugging
         if: failure()
