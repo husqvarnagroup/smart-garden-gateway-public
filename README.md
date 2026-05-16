@@ -45,12 +45,12 @@ scripts/bbwrapper.sh at91sam gardena-image-foss-bnw linux-yocto-tiny
 
 * ```/``` Top level project.
     * ```/yocto/bitbake``` – the Bitbake build tool
-    * ```/yocto/openembedded-core``` – OpenEmbedded core layer
     * ```/yocto/meta-distribution``` – our own distribution (specifies packages to install)
     * ```/yocto/meta-gardena``` – our own code (testing, WiFi provisioning, etc.)
     * ```/yocto/meta-openembedded``` – Collection of layers for the OE-core universe
     * ```/yocto/meta-readonly-rootfs-overlay``` – Writable rootfs overlay on top of a read-only rootfs
     * ```/yocto/meta-swupdate``` – Update mechanism software
+    * ```/yocto/openembedded-core``` – OpenEmbedded core layer
 
 # Getting access
 
