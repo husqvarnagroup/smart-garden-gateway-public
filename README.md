@@ -72,7 +72,6 @@ session=$(curl -H 'Content-Type: application/json' -d '{"password": "'"$password
 Register your public key:
 ```
 curl -X POST -H "X-session: $session" -H 'Content-Type: application/json' -d '{"key": "'"$(cat ~/.ssh/id_ed25519.pub)"'"}' --insecure https://$gateway/ssh_access_credentials
-
 ```
 
 Enable SSH access:
