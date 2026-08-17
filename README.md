@@ -41,6 +41,15 @@ scripts/bbwrapper.sh mt7688 gardena-image-foss-bnw
 scripts/bbwrapper.sh at91sam gardena-image-foss-bnw
 ```
 
+## Running the Image in QEMU
+
+```
+scripts/bbwrapper.sh qemuarm gardena-image-foss-bnw
+scripts/runqemu.sh
+```
+
+To exit QEMU, press Ctrl+A followed by X.
+
 ## Repository Layout
 
 * ```/``` Top level project.
