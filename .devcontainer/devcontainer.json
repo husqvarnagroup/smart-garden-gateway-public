@@ -1,0 +1,5 @@
+{
+  "name": "smart-garden-gateway",
+  "image": "ghcr.io/husqvarnagroup/smart-garden-gateway-public/dev:latest",
+  "postCreateCommand": "git submodule update --init"
+}
