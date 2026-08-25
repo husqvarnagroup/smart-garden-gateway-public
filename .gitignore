@@ -1,1 +1,5 @@
 /build-*/
+
+# Populated by CI from the build artifacts before the image is built
+/docker/sstate-cache/*
+!/docker/sstate-cache/.gitkeep
