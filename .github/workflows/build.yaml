@@ -74,6 +74,17 @@ jobs:
             !build-${{ matrix.machine }}/tmp/deploy/spdx/*/by-hash
             !build-${{ matrix.machine }}/tmp/deploy/spdx/*/by-namespace
 
+      # Packing into a tarball because sstate file names contain colons.
+      - name: Pack sstate cache
+        run: tar -czf sstate-cache-${{ matrix.machine }}.tar.gz -C ~/.cache/yocto sstate-cache
+
+      - name: Upload sstate cache
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sstate-cache-${{ matrix.machine }}
+          path: sstate-cache-${{ matrix.machine }}.tar.gz
+          compression-level: 0
+
       - name: Generate dependency graph for debugging
         if: failure()
         run: scripts/bbwrapper.sh ${{ matrix.machine }} -g gardena-image-foss-bnw || true
