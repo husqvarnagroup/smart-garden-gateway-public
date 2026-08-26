@@ -9,16 +9,27 @@ on:
 
 jobs:
   release:
-    if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'linux-system-') }}
+    if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'gardena/release/') }}
     runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.tag.outputs.result }}
     steps:
       - name: Create Git tag
+        id: tag
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
+          result-encoding: string
           script: |
-            github.rest.git.createRef({
+            const branch = process.env.GITHUB_HEAD_REF
+            const match = branch.match(/^gardena\/release\/(v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)$/)
+            if (!match) {
+              throw new Error(`${branch} does not contain a valid version`)
+            }
+            const tag = 'gardena/' + match[1]
+            await github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/release/' + process.env.GITHUB_HEAD_REF,
+              ref: 'refs/tags/' + tag,
               sha: context.sha
             })
+            return tag
