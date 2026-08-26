@@ -33,3 +33,13 @@ jobs:
               sha: context.sha
             })
             return tag
+
+  # Creating a tag with GITHUB_TOKEN does not trigger a build, so call the workflow here for the tag
+  build:
+    needs: release
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/build.yaml
+    with:
+      ref: refs/tags/${{ needs.release.outputs.tag }}

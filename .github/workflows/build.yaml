@@ -8,6 +8,12 @@ on:
   push:
     tags:
       - "gardena/v*"
+  workflow_call:
+    inputs:
+      ref:
+        description: Commit, branch or tag (defaults to event's ref)
+        type: string
+        default: ""
   workflow_dispatch:
     inputs:
       runner:
@@ -59,6 +65,7 @@ jobs:
       - name: Checkout code including full history and submodules
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ inputs.ref }}
           submodules: true
           fetch-depth: 0
 
@@ -177,6 +184,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref }}
 
       - name: Download sstate cache artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
