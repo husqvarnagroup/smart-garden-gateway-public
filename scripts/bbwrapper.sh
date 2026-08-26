@@ -25,7 +25,11 @@ DISTRO_VERSION_ID="$(git describe --tags --dirty --match release/linux-system* |
 DISTRO_VERSION="$(echo "${DISTRO_VERSION_ID}" | egrep -o '[0-9]+\.[0-9]+\.[0-9]+' )"
 DISTRO_UPDATE_URL="${DISTRO_UPDATE_URL:-http://10.42.0.1:8000/gardena-update-image-prod-gardena-sg-${MACHINE}.swu}"
 DISTRO_UPDATE_URL_BASE="${DISTRO_UPDATE_URL_BASE:-http://gateway.iot.sg.dss.husqvarnagroup.net/images}"
-PACKAGE_FEED_URIS="${PACKAGE_FEED_URIS:-http://gateway.iot.sg.dss.husqvarnagroup.net/archive/${DISTRO_VERSION}/gardena-sg-${MACHINE}}"
+PACKAGE_FEED_MACHINE="${MACHINE}"
+if [ "${MACHINE}" = "qemuarm" ]; then
+    PACKAGE_FEED_MACHINE="at91sam"
+fi
+PACKAGE_FEED_URIS="${PACKAGE_FEED_URIS:-http://gateway.iot.sg.dss.husqvarnagroup.net/archive/${DISTRO_VERSION}/gardena-sg-${PACKAGE_FEED_MACHINE}}"
 
 BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS \
     DISTRO_UPDATE_URL \
