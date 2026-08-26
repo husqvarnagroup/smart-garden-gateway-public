@@ -7,7 +7,7 @@ on:
       - "doc/**"
   push:
     tags:
-      - "release/*"
+      - "gardena/v*"
   workflow_dispatch:
     inputs:
       runner:
