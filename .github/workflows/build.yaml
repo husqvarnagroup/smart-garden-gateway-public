@@ -63,16 +63,17 @@ jobs:
           scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
           scripts/bbwrapper.sh ${{ matrix.machine }} package-index
 
-      # Ignoring spdx/by-* folders because the action can not deal with colons in
-      # file names
+      # Tar because some file names contain colons and some differ only in case
+      - name: Pack artifacts
+        run: tar -cf build-artifacts-${{ matrix.machine }}.tar -C build-${{ matrix.machine }}/tmp deploy
+
       - name: Upload artifacts
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: Build artifacts (${{ matrix.machine }})
-          path: |
-            build-${{ matrix.machine }}/tmp/deploy
-            !build-${{ matrix.machine }}/tmp/deploy/spdx/*/by-hash
-            !build-${{ matrix.machine }}/tmp/deploy/spdx/*/by-namespace
+          name: build-artifacts-${{ matrix.machine }}
+          path: build-artifacts-${{ matrix.machine }}.tar
+          # Mostly already compressed images and packages
+          compression-level: 1
 
       # Tar because sstate file names contain colons
       - name: Pack sstate cache
@@ -96,14 +97,26 @@ jobs:
         if: failure()
         run: scripts/bbwrapper.sh ${{ matrix.machine }} -g gardena-image-foss-bnw || true
 
+      # Filter files to prevent "ELOOP: too many symbolic links encountered"
+      - name: Pack files for debugging build
+        if: failure()
+        run: |
+          : > debug-files-${{ matrix.machine }}
+          if [ -e build-${{ matrix.machine }}/task-depends.dot ]; then
+            printf '%s\0' build-${{ matrix.machine }}/task-depends.dot \
+                >> debug-files-${{ matrix.machine }}
+          fi
+          find build-${{ matrix.machine }}/tmp/work -type f -path '*/temp/log.*' \
+              -print0 >> debug-files-${{ matrix.machine }}
+          tar -cf build-debug-${{ matrix.machine }}.tar --null \
+              -T debug-files-${{ matrix.machine }}
+
       - name: Upload files for debugging build
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: build-debug-${{ matrix.machine }}
-          path: |
-            build-${{ matrix.machine }}/task-depends.dot
-            build-${{ matrix.machine }}/tmp/work/**/temp/log.*
+          path: build-debug-${{ matrix.machine }}.tar
 
   docker:
     needs: build
