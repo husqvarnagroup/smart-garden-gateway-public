@@ -9,10 +9,47 @@ on:
     tags:
       - "release/*"
   workflow_dispatch:
+    inputs:
+      runner:
+        description: Run on
+        type: choice
+        options:
+          - hosted
+          - self-hosted
+        default: hosted
+      sstate-cache:
+        description: Use sstate cache
+        type: boolean
+        default: true
 
 jobs:
+  setup:
+    runs-on: ubuntu-24.04
+    outputs:
+      runner: ${{ steps.check.outputs.runner }}
+      container: ${{ steps.check.outputs.container }}
+    steps:
+      - id: check
+        run: |
+          hosted=false
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.runner }}" = "hosted" ] ||
+             [ "${{ github.event_name }}" = "pull_request" ] || [ "${{ github.event.repository.fork }}" = "true" ]
+          then
+            hosted=true
+          fi
+
+          if [ "$hosted" = "true" ]; then
+            echo 'runner=["ubuntu-24.04"]' >> "$GITHUB_OUTPUT"
+            echo "container=ghcr.io/husqvarnagroup/smart-garden-gateway-public/ci:latest" >> "$GITHUB_OUTPUT"
+          else
+            echo 'runner=["self-hosted", "Linux"]' >> "$GITHUB_OUTPUT"
+            echo "container=" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
-    runs-on: [self-hosted, Linux]
+    needs: setup
+    runs-on: ${{ fromJSON(needs.setup.outputs.runner) }}
+    container: ${{ needs.setup.outputs.container }}
 
     strategy:
       matrix:
@@ -26,6 +63,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Yocto dependencies
+        if: job.container.id == ''
         run: |
           sudo apt update && sudo apt -qy --no-install-recommends install \
             build-essential \
@@ -56,10 +94,14 @@ jobs:
             ;
 
       - name: Generate locales
+        if: job.container.id == ''
         run: sudo locale-gen en_US.UTF-8
 
       - name: Build Open Source components
         run: |
+          if [ "${{ github.event.inputs.sstate-cache }}" = "false" ]; then
+            unset SSTATE_MIRRORS
+          fi
           scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
           scripts/bbwrapper.sh ${{ matrix.machine }} package-index
 
