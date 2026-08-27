@@ -37,6 +37,8 @@ ENV LANG=en_US.UTF-8
 RUN useradd --create-home --shell /bin/bash user \
     && echo 'user ALL=(ALL) NOPASSWD:ALL' >/etc/sudoers.d/user
 
-USER user
+ENV SSTATE_MIRRORS="file://.* file:///var/cache/yocto/sstate-cache/PATH"
+ENV BB_ENV_PASSTHROUGH_ADDITIONS=SSTATE_MIRRORS
+COPY sstate-cache /var/cache/yocto/sstate-cache
 
-COPY --chown=user:user sstate-cache /home/user/.cache/yocto/sstate-cache
+USER user
