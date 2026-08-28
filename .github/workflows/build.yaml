@@ -102,6 +102,12 @@ jobs:
           if [ "${{ github.event.inputs.sstate-cache }}" = "false" ]; then
             unset SSTATE_MIRRORS
           fi
+          unset SSTATE_CACHE_DIR
+          unset BB_ENV_PASSTHROUGH_ADDITIONS
+
+          mkdir -p ~/.cache/yocto
+          cp -r /var/cache/yocto/sstate-cache ~/.cache/yocto/
+          sudo chown -R 1001:1001 ~/.cache/yocto/sstate-cache
           scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
           scripts/bbwrapper.sh ${{ matrix.machine }} package-index
 
@@ -119,15 +125,15 @@ jobs:
 
       # Tar because sstate file names contain colons
       - name: Pack sstate cache
-        if: >-
-          github.ref_type == 'tag'
-          || github.ref_name == 'main'
+        # if: >-
+        #   github.ref_type == 'tag'
+        #   || github.ref_name == 'main'
         run: tar -cf sstate-cache-${{ matrix.machine }}.tar -C ~/.cache/yocto sstate-cache
 
       - name: Upload sstate cache
-        if: >-
-          github.ref_type == 'tag'
-          || github.ref_name == 'main'
+        # if: >-
+        #   github.ref_type == 'tag'
+        #   || github.ref_name == 'main'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: sstate-cache-${{ matrix.machine }}
@@ -162,9 +168,9 @@ jobs:
 
   docker:
     needs: build
-    if: >-
-      github.ref_type == 'tag'
-      || github.ref_name == 'main'
+    # if: >-
+    #   github.ref_type == 'tag'
+    #   || github.ref_name == 'main'
     runs-on: ubuntu-24.04
 
     permissions:
