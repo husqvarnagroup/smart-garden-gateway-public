@@ -14,10 +14,10 @@ cd "$gitroot"
 
 # If BitBake (and therefore the build directory) was not set up before, then do it now.
 if ! type bitbake >/dev/null 2>&1; then
-  TEMPLATECONF="${gitroot}/yocto/meta-distribution/conf/templates/default"
-  export TEMPLATECONF
-  source yocto/openembedded-core/oe-init-build-env "${BUILD_DIR}"
-  sed -i 's/\(^MACHINE ??= "\).*\(".*\)/\1'gardena-sg-${MACHINE}'\2/g' conf/local.conf
+    TEMPLATECONF="${gitroot}/yocto/meta-distribution/conf/templates/default"
+    export TEMPLATECONF
+    source yocto/openembedded-core/oe-init-build-env "${BUILD_DIR}"
+    sed -i 's/\(^MACHINE ??= "\).*\(".*\)/\1'gardena-sg-${MACHINE}'\2/g' conf/local.conf
 fi
 
 # Using git and annotated tags in the form or release/linux-system-X.Y.Z[-suffix] to determine the distribution version.
@@ -28,19 +28,19 @@ DISTRO_UPDATE_URL_BASE="${DISTRO_UPDATE_URL_BASE:-http://gateway.iot.sg.dss.husq
 PACKAGE_FEED_URIS="${PACKAGE_FEED_URIS:-http://gateway.iot.sg.dss.husqvarnagroup.net/archive/${DISTRO_VERSION}/gardena-sg-${MACHINE}}"
 
 BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS \
-  DISTRO_UPDATE_URL \
-  DISTRO_UPDATE_URL_BASE \
-  DISTRO_VERSION \
-  DISTRO_VERSION_ID \
-  PACKAGE_FEED_URIS \
-  SSTATE_MIRRORS \
+    DISTRO_UPDATE_URL \
+    DISTRO_UPDATE_URL_BASE \
+    DISTRO_VERSION \
+    DISTRO_VERSION_ID \
+    PACKAGE_FEED_URIS \
+    SSTATE_MIRRORS \
 "
 export \
-  BB_ENV_PASSTHROUGH_ADDITIONS \
-  DISTRO_UPDATE_URL \
-  DISTRO_UPDATE_URL_BASE \
-  DISTRO_VERSION \
-  DISTRO_VERSION_ID \
-  PACKAGE_FEED_URIS
+    BB_ENV_PASSTHROUGH_ADDITIONS \
+    DISTRO_UPDATE_URL \
+    DISTRO_UPDATE_URL_BASE \
+    DISTRO_VERSION \
+    DISTRO_VERSION_ID \
+    PACKAGE_FEED_URIS
 
 exec bitbake "${@:2}"
