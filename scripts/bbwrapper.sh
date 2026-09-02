@@ -20,8 +20,8 @@ if ! type bitbake >/dev/null 2>&1; then
   sed -i 's/\(^MACHINE ??= "\).*\(".*\)/\1'gardena-sg-${MACHINE}'\2/g' conf/local.conf
 fi
 
-# Using git and annotated tags in the form or release/linux-system-X.Y.Z[-suffix] to determine the distribution version.
-DISTRO_VERSION_ID="$(git describe --tags --dirty --match release/linux-system* | cut -c 22-)"
+# Deriving the distribution version from the newest tag in the form of gardena/vX.Y.Z[-suffix].
+DISTRO_VERSION_ID="$(git describe --tags --dirty --match gardena/v* | cut -d v -f 2- || git describe --tags --dirty --match release/linux-system* | cut -c 22-)"
 DISTRO_VERSION="$(echo "${DISTRO_VERSION_ID}" | egrep -o '[0-9]+\.[0-9]+\.[0-9]+' )"
 DISTRO_UPDATE_URL="${DISTRO_UPDATE_URL:-http://10.42.0.1:8000/gardena-update-image-prod-gardena-sg-${MACHINE}.swu}"
 DISTRO_UPDATE_URL_BASE="${DISTRO_UPDATE_URL_BASE:-http://gateway.iot.sg.dss.husqvarnagroup.net/images}"
