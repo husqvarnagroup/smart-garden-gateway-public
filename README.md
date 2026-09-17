@@ -32,13 +32,13 @@ Source code packages for all distributed versions can be found [here](https://op
 ### Article Number 19005 (MediaTek MT7688)
 
 ```
-scripts/bbwrapper.sh mt7688 gardena-image-foss-bnw linux-yocto-tiny
+scripts/bbwrapper.sh mt7688 gardena-image-foss-bnw
 ```
 
 ### Article Number 19000 (Atmel AT91SAM)
 
 ```
-scripts/bbwrapper.sh at91sam gardena-image-foss-bnw linux-yocto-tiny
+scripts/bbwrapper.sh at91sam gardena-image-foss-bnw
 ```
 
 ## Repository Layout
