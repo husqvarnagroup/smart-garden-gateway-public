@@ -10,7 +10,7 @@ set -eu
 
 if [ "${1-}" = "handle-submodule" ]; then
     # Available in submodule foreach: $name, $sm_path, $displaypath, $sha1, $toplevel
-    body_file="${BUMP_BODY_FILE}"
+    body_file="${BUMP_BODY_DIR}/$(printf '%s' "${sm_path}" | tr / _)"
     ref="${BUMP_REF}"
 
     target_branch=""
@@ -62,22 +62,38 @@ if [ -n "${ref}" ] && ! git diff --quiet; then
     exit 1
 fi
 
+# The sections of these submodules are listed first in the commit message, the
+# remaining ones follow sorted by path.
+GARDENA_SUBMODULES="yocto/meta-distribution yocto/meta-gardena yocto/meta-lemonbeat-firmware"
+
+body_dir=$(mktemp -d)
 body_file=$(mktemp)
-trap 'rm -f "${body_file}"' EXIT TERM INT
-echo "Update submodule(s)" > "${body_file}"
+trap 'rm -rf "${body_dir}" "${body_file}"' EXIT TERM INT
 
 # git submodule foreach joins its arguments into a shell command line and only
 # exports $sha1 and $sm_path for the single-string form. The environment keeps
 # our values out of that line.
 BUMP_SCRIPT="${self}"
-BUMP_BODY_FILE="${body_file}"
+BUMP_BODY_DIR="${body_dir}"
 BUMP_REF="${ref}"
-export BUMP_SCRIPT BUMP_BODY_FILE BUMP_REF
+export BUMP_SCRIPT BUMP_BODY_DIR BUMP_REF
 git submodule foreach 'export sha1 sm_path; "${BUMP_SCRIPT}" handle-submodule'
 
 if git diff --quiet; then
     echo "All submodules are already up-to-date"
     exit 0
+fi
+
+echo "Update submodule(s)" > "${body_file}"
+for sm_path in ${GARDENA_SUBMODULES}; do
+    section="${body_dir}/$(printf '%s' "${sm_path}" | tr / _)"
+    if [ -e "${section}" ]; then
+        cat "${section}" >> "${body_file}"
+        rm "${section}"
+    fi
+done
+if [ -n "$(ls -A "${body_dir}")" ]; then
+    cat "${body_dir}"/* >> "${body_file}"
 fi
 
 git commit -eF "${body_file}" .
