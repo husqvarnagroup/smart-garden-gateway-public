@@ -62,12 +62,17 @@ jobs:
         machine: ["mt7688", "at91sam"]
 
     steps:
-      - name: Checkout code including full history and submodules
+      - name: Checkout code including full history
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.ref }}
-          submodules: true
           fetch-depth: 0
+
+      # Not left to actions/checkout because its credential handling runs
+      # "git submodule foreach --recursive", which fails on the gitlink
+      # meta-aws carries without a .gitmodules entry.
+      - name: Checkout submodules
+        run: git submodule update --init
 
       - name: Install Yocto dependencies
         if: job.container.id == ''
