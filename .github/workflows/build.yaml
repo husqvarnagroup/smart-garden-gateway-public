@@ -59,7 +59,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: ["mt7688", "at91sam"]
+        machine: ["mt7688", "at91sam", "qemuarm"]
 
     steps:
       - name: Checkout code including full history and submodules
@@ -109,8 +109,12 @@ jobs:
           if [ "${{ github.event.inputs.sstate-cache }}" = "false" ]; then
             unset SSTATE_MIRRORS
           fi
-          scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
-          scripts/bbwrapper.sh ${{ matrix.machine }} package-index
+          if [ "${{ matrix.machine }}" = "qemuarm" ]; then
+            scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw
+          else
+            scripts/bbwrapper.sh ${{ matrix.machine }} gardena-image-foss-bnw linux-yocto-tiny u-boot
+            scripts/bbwrapper.sh ${{ matrix.machine }} package-index
+          fi
 
       # Tar because some file names contain colons and some differ only in case
       - name: Pack artifacts
