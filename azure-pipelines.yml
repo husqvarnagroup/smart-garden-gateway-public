@@ -1,0 +1,23 @@
+# Upstream half of the GitHub -> Azure DevOps trigger chain.
+#
+# A repository resource of type `github` cannot carry a CI trigger, so the
+# pipeline in the private repository cannot react to pushes here on its own.
+# This pipeline does, and the private one chains off its completion through a
+# `pipelines` resource.
+trigger:
+  branches:
+    include:
+      - gardena/eb/citest
+
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - checkout: none
+
+  - script: |
+      echo "branch: $(Build.SourceBranch)"
+      echo "commit: $(Build.SourceVersion)"
+    displayName: 'Signal downstream'
