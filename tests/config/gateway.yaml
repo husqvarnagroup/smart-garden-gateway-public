@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+targets:
+  main:
+    resources:
+      - USBSerialPort:
+          match:
+            # QinHeng Electronics CH340 serial converter
+            # Using: https://github.com/easybe/ez-uart-adapter
+            # See: `udevadm monitor --udev --property`.
+            ID_SERIAL: 1a86_USB_Serial
+          speed: 115200            
+    drivers:
+      - SerialDriver: {}
+      # The adapter's RTS line switches the gateway's power, which is on
+      # while RTS is asserted.
+      - SerialPortDigitalOutputDriver:
+          signal: rts
+          invert: false
+      # `delay` is how long the gateway stays powered off during a cycle.
+      - DigitalOutputPowerDriver:
+          delay: 2.0
+      - ShellDriver:
+          login_prompt: 'GARDENA-[0-9a-f]{6} login: '
+          username: root
+          # The image's PS1 prints "ERROR: <code> | " before the prompt when
+          # the previous command exited non-zero
+          # (see display-error-on-nonzero-status.sh of busybox).
+          prompt: '(?:ERROR: \d+ \| )?root@GARDENA-[0-9a-f]{6}:~# '
+          # Covers the whole boot, from power-on to the login prompt.
+          login_timeout: 120
+          # The console carries systemd's boot output as well, which would
+          # otherwise interleave with prompt detection.
+          post_login_settle_time: 2
