@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+[project]
+name = "labgrid-tests"
+version = "0.1.0"
+description = "Run tests for the Smart Garden Gateway with labgird."
+authors = [
+    {name = "Lukas Woodtli",email = "lukas.woodtli@husqvarnagroup.com"}
+]
+license = "GPL-3.0-or-later"
+requires-python = ">=3.12"
+dependencies = [
+    "labgrid (>=26.0,<27.0)",
+    "pytest (>=9.1.1,<10.0.0)",
+    "ruff (>=0.16.9,<0.17.0)"
+]
+
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
