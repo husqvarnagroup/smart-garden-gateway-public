@@ -5,7 +5,7 @@
 import re
 
 
-def test_proc_version(shell):
+def test_proc_version(gateway_system_is_running, shell):
     stdout, _, exit_code = shell.run("cat /proc/version")
     assert exit_code == 0
     assert stdout
@@ -21,7 +21,7 @@ def parse_os_release(content):
     return os_release
 
 
-def test_os_release(shell):
+def test_os_release(gateway_system_is_running, shell):
     stdout, _, exit_code = shell.run("cat /etc/os-release")
     assert exit_code == 0
     assert stdout
