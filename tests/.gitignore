@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+venv/
+.pytest_cache/
+tests/__pycache__/
