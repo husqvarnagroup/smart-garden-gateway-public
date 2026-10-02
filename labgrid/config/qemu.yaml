@@ -1,0 +1,50 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# QEMU counterpart of gateway.yaml. The kernel, device tree and root
+# filesystem come from the Yocto build for MACHINE = gardena-sg-qemuarm.
+# Point LG_DEPLOY_DIR at that build's deploy directory, for example:
+#   export LG_DEPLOY_DIR=$PWD/build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm
+targets:
+  main:
+    resources: {}
+    drivers:
+      - QEMUDriver:
+          qemu_bin: qemu_arm
+          # machine, memory and device tree follow the build's
+          # gardena-image-foss-bnw-gardena-sg-qemuarm.qemuboot.conf
+          machine: versatilepb
+          # versatilepb's real core is an ARM926EJ-S, and runqemu does not
+          # pass -cpu at all, so QEMU falls back to this machine's default.
+          # labgrid's QEMUDriver has no such default and requires "cpu".
+          cpu: arm926
+          memory: 128M
+          kernel: kernel
+          dtb: dtb
+          nic: 'user,model=virtio-net-pci'
+          # The disk cannot use the driver's own "disk:" key, because
+          # QEMUDriver only wires a disk for vexpress-a9, pc, q35 and virt
+          # and raises NotImplementedError for anything else
+          # (labgrid/driver/qemudriver.py:192). `scripts/runqemu.sh` attaches
+          # the same image with "if=virtio", producing /dev/vda, so do the
+          # same here instead of inventing a SCSI disk: a SCSI-attached disk
+          # left the kernel waiting forever for a root device it never
+          # recognizes.
+          extra_args: !template '-drive if=virtio,file=$LG_DEPLOY_DIR/gardena-image-foss-bnw-gardena-sg-qemuarm.ext4,format=raw'
+          # net.ifnames=0 keeps the interface named eth0, which is what
+          # unique-hostname reads to build the GARDENA-<id> hostname
+          boot_args: 'root=/dev/vda rw rootwait swiotlb=0 console=ttyAMA0,115200 net.ifnames=0'
+      - ShellDriver:
+          login_prompt: 'GARDENA-[0-9a-f]{6} login: '
+          username: root
+          # the image's PS1 prints "ERROR: <code> | " before the prompt when
+          # the previous command exited non-zero
+          prompt: '(?:ERROR: \d+ \| )?root@GARDENA-[0-9a-f]{6}:~# '
+          login_timeout: 120
+          post_login_settle_time: 2
+images:
+  kernel: !template '$LG_DEPLOY_DIR/zImage'
+  dtb: !template '$LG_DEPLOY_DIR/qemu-gardena-smart-gateway.dtb'
+tools:
+  qemu_arm: /usr/bin/qemu-system-arm
