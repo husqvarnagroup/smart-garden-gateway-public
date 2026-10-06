@@ -11,30 +11,32 @@ targets:
     resources: {}
     drivers:
       - QEMUDriver:
-          qemu_bin: qemu_arm
-          # machine, memory and device tree follow the build's
-          # gardena-image-foss-bnw-gardena-sg-qemuarm.qemuboot.conf
-          machine: versatilepb
+          # qemu_bin, machine and memory are filled in by the "target"
+          # fixture in conftest.py, from the build's own
+          # *.qemuboot.conf, so they cannot drift from a future board or
+          # image change. qemu_bin ends up as the qemu-system-arm that
+          # the Yocto build produced for itself (qemu-system-native),
+          # the same one scripts/runqemu.sh uses, not any system-wide
+          # install, which may differ in version or build options. These
+          # three are placeholders, only to satisfy QEMUDriver's
+          # required fields; labgrid only substitutes BASE and LG_* in
+          # !template, so the real values cannot be read from here.
+          qemu_bin: ''
+          machine: ''
+          memory: ''
           # versatilepb's real core is an ARM926EJ-S, and runqemu does not
           # pass -cpu at all, so QEMU falls back to this machine's default.
           # labgrid's QEMUDriver has no such default and requires "cpu".
+          # qemuboot.conf has no matching field, so this stays hardcoded.
           cpu: arm926
-          memory: 128M
           kernel: kernel
           dtb: dtb
           nic: 'user,model=virtio-net-pci'
-          # The disk cannot use the driver's own "disk:" key, because
-          # QEMUDriver only wires a disk for vexpress-a9, pc, q35 and virt
-          # and raises NotImplementedError for anything else
-          # (labgrid/driver/qemudriver.py:192). `scripts/runqemu.sh` attaches
-          # the same image with "if=virtio", producing /dev/vda, so do the
-          # same here instead of inventing a SCSI disk: a SCSI-attached disk
-          # left the kernel waiting forever for a root device it never
-          # recognizes.
-          extra_args: !template '-drive if=virtio,file=$LG_DEPLOY_DIR/gardena-image-foss-bnw-gardena-sg-qemuarm.ext4,format=raw'
-          # net.ifnames=0 keeps the interface named eth0, which is what
-          # unique-hostname reads to build the GARDENA-<id> hostname
-          boot_args: 'root=/dev/vda rw rootwait swiotlb=0 console=ttyAMA0,115200 net.ifnames=0'
+          # extra_args (the disk) and boot_args are also filled in by the
+          # "target" fixture. The disk cannot use the driver's own
+          # "disk:" key, because QEMUDriver only wires a disk for
+          # vexpress-a9, pc, q35 and virt and raises NotImplementedError
+          # for anything else (labgrid/driver/qemudriver.py:192).
       - ShellDriver:
           login_prompt: 'GARDENA-[0-9a-f]{6} login: '
           username: root
@@ -44,7 +46,10 @@ targets:
           login_timeout: 120
           post_login_settle_time: 2
 images:
+  # These two filenames match kernel_imagetype and qb_dtb in the build's
+  # *.qemuboot.conf. labgrid only substitutes BASE and LG_* in !template,
+  # so, unlike the QEMUDriver fields above, these cannot be read from
+  # that file here; update them by hand if a future board or image
+  # change renames either file.
   kernel: !template '$LG_DEPLOY_DIR/zImage'
   dtb: !template '$LG_DEPLOY_DIR/qemu-gardena-smart-gateway.dtb'
-tools:
-  qemu_arm: /usr/bin/qemu-system-arm
