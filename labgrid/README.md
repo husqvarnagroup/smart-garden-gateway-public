@@ -37,7 +37,7 @@ pipx install poetry
 Install project dependencies:
 
 ```
-cd test/labgrid
+cd labgrid
 poetry env use 3.12
 poetry install
 ```
