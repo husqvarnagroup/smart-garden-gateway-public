@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-venv/
 .pytest_cache/
+console_main
 tests/__pycache__/
+venv/
