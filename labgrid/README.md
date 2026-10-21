@@ -67,6 +67,14 @@ If a run is killed rather than stopped, a `qemu-system-arm` process stays
 behind, because labgrid never reaches `on_deactivate`. Check with
 `pgrep -a qemu-system-arm` and end it before the next run.
 
+Every QEMU run ends with a harmless but noisy teardown error. This
+happens on normal runs, not only after a kill signal. QEMU writes an
+unrelated hardware-emulation warning line to the same channel that the
+QMP monitor reads. This breaks the QMP `quit` command during cleanup.
+As a result, a `/tmp/labgrid-qemu-tmp-*` directory stays behind after
+each run. Clean up these directories from time to time. For example,
+run `rm -rf /tmp/labgrid-qemu-tmp-*` between runs.
+
 Known limitation: `test_system_running`, `test_proc_version`, and
 `test_os_release` do not pass under QEMU. All three depend on the
 `gateway_system_is_running` fixture. That fixture waits for `systemctl
@@ -84,8 +92,8 @@ tests as errors, not as passes or failures.
 
 These tests and the `gateway_system_is_running` fixture stay the same
 for the bench and for QEMU. A later change can add QEMU support for this
-hardware, or split the fixture by target. This plan does not make that
-change.
+hardware, or split the fixture by target. This change does not add that
+support.
 
 ## Adding more targets
 
@@ -94,9 +102,9 @@ The tests read nothing that is specific to a bench.
 
 Two rules keep this working as the number of targets grows:
 
-- With a second serial adapter on the same machine, `/dev/ttyUSB0` is no
-  longer stable. Replace `RawSerialPort` with `USBSerialPort` and a udev
-  `match:`, which names the adapter by its USB path instead of its order.
+- A second serial adapter needs its own udev `match:` so it is identified
+  by USB path rather than enumeration order. `config/gateway.yaml`
+  already does this for its one adapter.
 - With a labgrid coordinator, only the `resources:` block changes, to
   `RemotePlace` with `name: !template '$LG_PLACE'`. Drivers, fixtures and
   tests stay as they are. QEMU is not affected, because labgrid has no QEMU

@@ -4,8 +4,11 @@
 
 # QEMU counterpart of gateway.yaml. The kernel, device tree and root
 # filesystem come from the Yocto build for MACHINE = gardena-sg-qemuarm,
-# always at the fixed path ../../build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm,
-# relative to this file.
+# always at the fixed path build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm.
+# The "images:" paths below resolve this relative to this file (two levels
+# up); the "extra_args" path further down resolves it relative to the
+# pytest invocation directory instead (see the comment above "extra_args"
+# for why), so it only goes up one level.
 # Build it first with:
 #   ./scripts/bbwrapper.sh qemuarm gardena-image-bnw-zephyr
 targets:
@@ -34,8 +37,8 @@ targets:
           nic: 'user,model=virtio-net-pci'
           # The disk cannot use the driver's own "disk:" key, because
           # QEMUDriver only wires a disk for vexpress-a9, pc, q35 and virt
-          # and raises NotImplementedError for anything else
-          # (labgrid/driver/qemudriver.py:192). qemuboot.conf's own
+          # and raises NotImplementedError for anything else (in
+          # get_qemu_base_args). qemuboot.conf's own
           # qb_drive_type reads "/dev/sd" (SCSI), but that field only
           # applies to runqemu's "VM container" filesystem types (hddimg,
           # iso); for a plain ext4 image, runqemu always attaches a
@@ -44,9 +47,10 @@ targets:
           #
           # Unlike the "images:" paths below, QEMUDriver passes extra_args
           # straight to the qemu-system-arm command line without resolving
-          # it against this file's directory, so this path is relative to
-          # the pytest process's cwd instead (labgrid/, per Step 9's "cd
-          # labgrid"), one level up from this file rather than two.
+          # it against this file's directory, so this path resolves against
+          # the directory pytest is invoked from (this repo's README
+          # documents running from "labgrid/"), not against this file's own
+          # directory, one level up from this file rather than two.
           extra_args: '-drive file=../build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm/gardena-image-bnw-zephyr-gardena-sg-qemuarm.ext4,if=virtio,format=raw'
           # net.ifnames=0 keeps the interface named eth0, which is what
           # unique-hostname reads to build the GARDENA-<id> hostname
@@ -57,7 +61,8 @@ targets:
           # the image's PS1 prints "ERROR: <code> | " before the prompt when
           # the previous command exited non-zero
           prompt: '(?:ERROR: \d+ \| )?root@GARDENA-[0-9a-f]{6}:~# '
-          login_timeout: 120
+          # Boot time varies with host load; a busy host has taken close to 300s.
+          login_timeout: 400
           post_login_settle_time: 2
 images:
   # These two filenames match kernel_imagetype and qb_dtb in the build's
