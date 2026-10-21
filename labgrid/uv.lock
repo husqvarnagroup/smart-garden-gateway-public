@@ -173,6 +173,11 @@ wheels = [
 ]
 
 [[package]]
+name = "fake-rm"
+version = "0.1.0"
+source = { directory = "../tools/fake-radio-module" }
+
+[[package]]
 name = "grpcio"
 version = "1.85.1"
 source = { registry = "https://pypi.org/simple" }
@@ -296,6 +301,7 @@ name = "labgrid-tests"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "fake-rm" },
     { name = "labgrid" },
     { name = "pytest" },
     { name = "ruff" },
@@ -303,6 +309,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "fake-rm", directory = "../tools/fake-radio-module" },
     { name = "labgrid", specifier = ">=26.0,<27.0" },
     { name = "pytest", specifier = ">=9.1.1,<10.0.0" },
     { name = "ruff", specifier = ">=0.16.9,<0.17.0" },
