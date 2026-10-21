@@ -17,7 +17,11 @@ TIMEOUT_SYSTEM_RUNNING = 300.0
 
 DEPLOY_DIR = (
     Path(__file__).parent.parent.parent
-    / "build-qemuarm" / "tmp" / "deploy" / "images" / "gardena-sg-qemuarm"
+    / "build-qemuarm"
+    / "tmp"
+    / "deploy"
+    / "images"
+    / "gardena-sg-qemuarm"
 )
 
 

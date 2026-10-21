@@ -3,15 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import pytest
-
 from qemuboot_conf import read_qemuboot_conf
 
 
 def test_reads_config_bsp_section(tmp_path):
     (tmp_path / "gardena-image-bnw-zephyr-gardena-sg-qemuarm.qemuboot.conf").write_text(
-        "[config_bsp]\n"
-        "qb_machine = -machine versatilepb\n"
-        "qb_mem = -m 128\n"
+        "[config_bsp]\nqb_machine = -machine versatilepb\nqb_mem = -m 128\n"
     )
 
     bsp = read_qemuboot_conf(tmp_path)
