@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# QEMU counterpart of gateway.yaml. The kernel, device tree and root
+# filesystem come from the Yocto build for MACHINE = gardena-sg-qemuarm,
+# always at the fixed path build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm.
+# The "images:" paths below resolve this relative to this file (two levels
+# up); the "extra_args" path further down resolves it relative to the
+# pytest invocation directory instead (see the comment above "extra_args"
+# for why), so it only goes up one level.
+# Build it first with:
+#   ./scripts/bbwrapper.sh qemuarm gardena-image-bnw-zephyr
+targets:
+  main:
+    resources: {}
+    drivers:
+      - QEMUDriver:
+          # qemu_bin, machine and memory are filled in by the "target"
+          # fixture in conftest.py, read from the build's own
+          # *.qemuboot.conf, so they cannot drift from a future board or
+          # image change. qemu_bin ends up as the qemu-system-arm that
+          # the Yocto build produced for itself, the same one
+          # scripts/runqemu.sh uses, not a system-wide install. These
+          # three are placeholders, only to satisfy QEMUDriver's
+          # required fields at load time.
+          qemu_bin: ''
+          machine: ''
+          memory: ''
+          # versatilepb's real core is an ARM926EJ-S, and runqemu does not
+          # pass -cpu at all, so QEMU falls back to this machine's default.
+          # labgrid's QEMUDriver has no such default and requires "cpu".
+          # qemuboot.conf has no matching field, so this stays hardcoded.
+          cpu: arm926
+          kernel: kernel
+          dtb: dtb
+          nic: 'user,model=virtio-net-pci'
+          # The rootfs drive is set in conftest.py as extra_args, not here.
+          # QEMUDriver only wires a disk for vexpress-a9, pc, q35 and virt,
+          # and raises NotImplementedError for anything else. The drive is
+          # a virtio ext4 disk, which is what boot_args expects (root=/dev/vda).
+          # net.ifnames=0 keeps the interface named eth0, which is what
+          # unique-hostname reads to build the GARDENA-<id> hostname
+          boot_args: 'root=/dev/vda rw rootwait swiotlb=0 console=ttyAMA0,115200 net.ifnames=0'
+      - ShellDriver:
+          login_prompt: 'GARDENA-[0-9a-f]{6} login: '
+          username: root
+          # the image's PS1 prints "ERROR: <code> | " before the prompt when
+          # the previous command exited non-zero
+          prompt: '(?:ERROR: \d+ \| )?root@GARDENA-[0-9a-f]{6}:~# '
+          # Boot time varies with host load; a busy host has taken close to 300s.
+          login_timeout: 400
+          post_login_settle_time: 2
+images:
+  # These two filenames match kernel_imagetype and qb_dtb in the build's
+  # *.qemuboot.conf. Update them by hand if a future board or image
+  # change renames either file.
+  kernel: ../../build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm/zImage
+  dtb: ../../build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm/qemu-gardena-smart-gateway.dtb
