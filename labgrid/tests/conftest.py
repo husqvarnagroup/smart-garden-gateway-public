@@ -6,6 +6,7 @@ import logging
 from pathlib import Path
 
 import pytest
+from labgrid.exceptions import NoDriverFoundError
 from qemuboot_conf import read_qemuboot_conf
 
 logger = logging.getLogger(__name__)
@@ -26,9 +27,15 @@ def target(target):
 
     Runs before the driver is first activated, so qemu_bin, machine and
     memory never hold their qemu.yaml placeholder values at boot time.
+    This is a no-op for targets without a QEMUDriver, such as the real
+    bench in config/gateway.yaml.
     """
+    try:
+        driver = target.get_driver("QEMUDriver", activate=False)
+    except NoDriverFoundError:
+        return target
+
     bsp = read_qemuboot_conf(DEPLOY_DIR)
-    driver = target.get_driver("QEMUDriver", activate=False)
     driver.machine = bsp["qb_machine"].removeprefix("-machine ")
     driver.memory = bsp["qb_mem"].removeprefix("-m ")
     driver.qemu_bin = str(
