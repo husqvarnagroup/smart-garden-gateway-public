@@ -6,4 +6,5 @@
 .pytest_cache/
 .venv/
 **/__pycache__/
+console_main
 venv/
