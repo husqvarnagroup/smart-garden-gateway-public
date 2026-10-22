@@ -5,3 +5,5 @@
 venv/
 .pytest_cache/
 tests/__pycache__/
+console_main
+.idea

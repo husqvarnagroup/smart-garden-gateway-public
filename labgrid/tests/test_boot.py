@@ -9,7 +9,7 @@ def test_system_running(gateway_system_is_running, shell):
 
     # is-system-running only names the aggregate state, so say which units
     # are responsible for it
-    failed, _, _ = shell.run("systemctl --failed --no-legend --plain")
+    failed, _, _ = shell.run("systemctl --failed --no-legend --plain", timeout=50)
 
     assert exit_code == 0, (
         f"system state is {' '.join(stdout)}, failed units: {'; '.join(failed)}"
