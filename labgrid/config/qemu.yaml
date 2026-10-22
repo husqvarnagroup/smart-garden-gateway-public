@@ -35,23 +35,10 @@ targets:
           kernel: kernel
           dtb: dtb
           nic: 'user,model=virtio-net-pci'
-          # The disk cannot use the driver's own "disk:" key, because
-          # QEMUDriver only wires a disk for vexpress-a9, pc, q35 and virt
-          # and raises NotImplementedError for anything else (in
-          # get_qemu_base_args). qemuboot.conf's own
-          # qb_drive_type reads "/dev/sd" (SCSI), but that field only
-          # applies to runqemu's "VM container" filesystem types (hddimg,
-          # iso); for a plain ext4 image, runqemu always attaches a
-          # virtio drive and boots root=/dev/vda, so do the same here
-          # rather than follow qb_drive_type.
-          #
-          # Unlike the "images:" paths below, QEMUDriver passes extra_args
-          # straight to the qemu-system-arm command line without resolving
-          # it against this file's directory, so this path resolves against
-          # the directory pytest is invoked from (this repo's README
-          # documents running from "labgrid/"), not against this file's own
-          # directory, one level up from this file rather than two.
-          extra_args: '-drive file=../build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm/gardena-image-bnw-zephyr-gardena-sg-qemuarm.ext4,if=virtio,format=raw'
+          # The rootfs drive is set in conftest.py as extra_args, not here.
+          # QEMUDriver only wires a disk for vexpress-a9, pc, q35 and virt,
+          # and raises NotImplementedError for anything else. The drive is
+          # a virtio ext4 disk, which is what boot_args expects (root=/dev/vda).
           # net.ifnames=0 keeps the interface named eth0, which is what
           # unique-hostname reads to build the GARDENA-<id> hostname
           boot_args: 'root=/dev/vda rw rootwait swiotlb=0 console=ttyAMA0,115200 net.ifnames=0'

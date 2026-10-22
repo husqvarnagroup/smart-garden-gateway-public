@@ -46,6 +46,8 @@ def setup_qemu_driver(driver):
     driver.qemu_bin = str(
         (DEPLOY_DIR / bsp["staging_bindir_native"] / bsp["qb_system_name"]).resolve()
     )
+    image = DEPLOY_DIR / f"{bsp['image_link_name']}.ext4"
+    driver.extra_args = f"-drive file={image},if=virtio,format=raw"
 
 
 @pytest.fixture(scope="session")
