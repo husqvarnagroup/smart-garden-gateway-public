@@ -42,6 +42,7 @@ targets:
           # net.ifnames=0 keeps the interface named eth0, which is what
           # unique-hostname reads to build the GARDENA-<id> hostname
           boot_args: 'root=/dev/vda rw rootwait swiotlb=0 console=ttyAMA0,115200 net.ifnames=0'
+          qmp_socket: true
       - ShellDriver:
           login_prompt: 'GARDENA-[0-9a-f]{6} login: '
           username: root

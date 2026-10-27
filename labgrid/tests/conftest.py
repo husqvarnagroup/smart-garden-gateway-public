@@ -16,23 +16,6 @@ logger = logging.getLogger(__name__)
 ConsoleLoggingReporter.start(".")
 
 
-# QEMU prints plain text on stdout, and labgrid reads QMP from stdout (-qmp stdio).
-# labgrid parses every line as JSON, so one stray line breaks the next QMP command.
-# Remove this once labgrid skips non-JSON lines.
-def read_parse_json_skipping_text(self):
-    while True:
-        line = self.monitor_out.readline().decode("utf-8")
-        self.logger.debug("Received line: %s", line.rstrip("\r\n"))
-        if not line:
-            raise QMPError("Received empty response")
-        try:
-            return json.loads(line)
-        except json.JSONDecodeError:
-            self.logger.warning("Skipped non-JSON line on QMP stream: %s", line.rstrip("\r\n"))
-
-
-QMPMonitor._read_parse_json = read_parse_json_skipping_text
-
 # systemctl --wait blocks until the system reaches a final state, so this
 # has to cover the rest of the boot and not just a round trip to the shell
 TIMEOUT_SYSTEM_RUNNING = 300.0
