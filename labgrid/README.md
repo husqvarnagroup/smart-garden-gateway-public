@@ -47,3 +47,8 @@ poetry install
 ```
 poetry run pytest --lg-env config/gateway.yaml tests/
 ```
+
+### Console Log
+
+Each test run writes the serial console output to the file `console_main` in the directory where the
+tests are run.

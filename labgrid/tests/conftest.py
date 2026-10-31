@@ -5,8 +5,11 @@
 import logging
 
 import pytest
+from labgrid import ConsoleLoggingReporter
 
 logger = logging.getLogger(__name__)
+
+ConsoleLoggingReporter.start(".")
 
 # systemctl --wait blocks until the system reaches a final state, so this
 # has to cover the rest of the boot and not just a round trip to the shell
