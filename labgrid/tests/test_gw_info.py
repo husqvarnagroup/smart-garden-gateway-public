@@ -30,12 +30,15 @@ def test_os_release(gateway_system_is_running, shell):
     assert content["ID"] == "gardena"
     assert content["NAME"] == "GARDENA smart Gateway"
 
-    assert content["VERSION"] == content["VERSION_ID"]
     version = content["VERSION"]
     assert re.match(r"^\d+\.\d+\.\d+\Z", version)
 
+    version_id = content["VERSION_ID"]
+    # VERSION_ID can be something like '10.12.2-17-g74cad91-dirty'
+    assert version_id.startswith(version)
+
     assert "VERSION_CODENAME" in content
-    assert content["CPE_NAME"] == f"cpe:/o:openembedded:gardena:{version}"
+    assert content["CPE_NAME"] == f"cpe:/o:openembedded:gardena:{version_id}"
     assert "BUILD_ID" in content
     assert "CODENAME" in content
     assert "IMAGE_ID" in content
