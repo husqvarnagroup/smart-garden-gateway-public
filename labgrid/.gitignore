@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+.idea/
 .pytest_cache/
-tests/__pycache__/
+.venv/
+**/__pycache__/
 venv/
