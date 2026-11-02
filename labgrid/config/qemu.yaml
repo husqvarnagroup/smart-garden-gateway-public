@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# The kernel, device tree and root filesystem come from the Yocto build
+# for gardena-sg-qemuarm. Build the image first with:
+# ./scripts/bbwrapper.sh qemuarm gardena-image-bnw-zephyr
+targets:
+  main:
+    resources: {}
+    drivers:
+      - QEMUDriver:
+          # qemu_bin, machine and memory are filled programmatically in
+          # the test project. The values are read from the build's
+          # *.qemuboot.conf, so they will not drift from an image change.
+          qemu_bin: ''
+          machine: ''
+          memory: ''
+          # versatilepb's real core is an ARM926EJ-S. labgrid's QEMUDriver
+          # has no default and requires "cpu".
+          # qemuboot.conf has no matching field, so this stays hardcoded.
+          cpu: arm926
+          kernel: kernel
+          dtb: dtb
+          nic: 'user,model=virtio-net-pci'
+      - ShellDriver:
+          login_prompt: 'GARDENA-[0-9a-f]{6} login: '
+          username: root
+          prompt: '(?:ERROR: \d+ \| )?root@GARDENA-[0-9a-f]{6}:~# '
+          login_timeout: 400
+          post_login_settle_time: 2
+images:
+  # These two filenames could also be read from the *.qemuboot.conf file, but
+  # that would be a bit more involved than just hardcoding them here. They are
+  # not expected to change at all, so hardcoding is acceptable.
+  kernel: ../../build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm/zImage
+  dtb:    ../../build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm/qemu-gardena-smart-gateway.dtb
