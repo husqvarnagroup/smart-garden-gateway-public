@@ -171,6 +171,45 @@ jobs:
           name: build-debug-${{ matrix.machine }}
           path: build-debug-${{ matrix.machine }}.tar
 
+  qa:
+    needs: build
+    runs-on: ${{ fromJSON(needs.setup.outputs.runner) }}
+    container: ${{ needs.setup.outputs.container }}
+
+    steps:
+      - name: Checkout code including submodules
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref }}
+          submodules: true
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: 3.14
+          update-environment: true
+
+      - name: Set up Poetry
+        uses: abatilo/actions-poetry@3765cf608f2d4a72178a9fc5b918668e542b89b1 # v4.0.0
+        with:
+          poetry-version: 2.5.1
+
+      - name: Install Python Test Dependencies
+        run: poetry install
+        working-directory: labgrid
+
+      - name: Lint Python code
+        run: poetry run ruff check
+        working-directory: labgrid
+
+      - name: Check format of Python code
+        run: poetry run ruff format --check
+        working-directory: labgrid
+
+      - name: Run labgrid tests on qemumarm image
+        run: poetry run pytest -s --log-cli-level=DEBUG --full-trace --lg-env config/qemu.yaml tests/
+        working-directory: labgrid
+
   docker:
     needs: build
     if: >-
