@@ -10,6 +10,8 @@ from labgrid.util.qmp import QMPMonitor
 
 from tfw.qemu import read_parse_json_skipping_text, setup_qemu_driver
 
+from tfw.network import ping_gateway
+
 logger = logging.getLogger(__name__)
 
 ConsoleLoggingReporter.start(".")
@@ -51,6 +53,39 @@ def shell(target):
 
 
 @pytest.fixture(scope="session")
+def gateway_id(shell):
+    stdout, _, exit_code = shell.run(
+        "fw_printenv -n gatewayid"
+    )
+
+    if exit_code != 0 or len(stdout) != 1:
+        logger.error(
+            "Failed to read gateway ID with exit code %d, output: %s",
+            exit_code,
+            " ".join(stdout),
+        )
+
+    yield stdout[0].strip() if stdout else None
+
+
+@pytest.fixture(scope="session")
+def gateway_hostname(shell):
+    stdout, _, exit_code = shell.run(
+        "hostname"
+    )
+
+    if exit_code != 0 or len(stdout) != 1:
+        logger.error(
+            "Failed to read gateway hostname with exit code %d, output: %s",
+
+            exit_code,
+            " ".join(stdout),
+        )
+
+    yield f"{stdout[0].strip()}.local" if stdout else None
+
+
+@pytest.fixture(scope="session")
 def gateway_system_is_running(shell):
     stdout, _, exit_code = shell.run(
         "systemctl --wait is-system-running", timeout=TIMEOUT_SYSTEM_RUNNING
@@ -66,3 +101,33 @@ def gateway_system_is_running(shell):
         logger.debug("systemctl --wait is-system-running succeeded")
 
     yield stdout, exit_code
+
+
+@pytest.fixture(scope="session")
+def gateway_network_active(gateway_system_is_running, shell):
+    stdout, _, exit_code = shell.run(
+        "systemctl is-active systemd-networkd", timeout=20
+    )
+
+    if exit_code != 0:
+        logger.error(
+            "systemctl is-active systemd-networkd failed with exit code %d, output: %s",
+            exit_code,
+            stdout,
+        )
+        raise RuntimeError("systemctl is-active systemd-networkd failed")
+    elif len(stdout) == 1 and stdout[0].strip() == "active":
+        return True
+
+    return False
+
+
+@pytest.fixture(scope="session")
+def gateway_reachable_on_network(gateway_network_active, gateway_hostname):
+    """Check if the gateway is reachable on the network.
+
+    Note: this is not a real IMCP ping, but a TCP connection attempt to port 80.
+    """
+    if not ping_gateway(gateway_hostname):
+        raise RuntimeError(f"Gateway {gateway_hostname} is not reachable on the network")
+    return True

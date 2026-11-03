@@ -42,3 +42,13 @@ def test_os_release(gateway_system_is_running, shell):
     assert "BUILD_ID" in content
     assert "CODENAME" in content
     assert "IMAGE_ID" in content
+
+
+def test_gateway_id(gateway_id):
+    assert re.match(r"^[0-9a-fA-F-]{36}\Z", gateway_id)
+
+
+def test_gateway_hostname(gateway_hostname):
+    assert gateway_hostname.endswith(".local")
+    hostname = gateway_hostname.replace(".local", "")
+    assert re.match(r"^GARDENA-[0-9a-fA-F]{6}\Z", hostname)
