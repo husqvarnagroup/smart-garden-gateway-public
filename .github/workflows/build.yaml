@@ -2,9 +2,15 @@ name: Build Open Source Components
 
 on:
   pull_request:
-    paths-ignore:
-      - "README.md"
-      - "doc/**"
+    paths:
+      - "**"
+      - "!.github/workflows/python.yaml"
+      - "!**/.gitignore"
+      - "!README.md"
+      - "!doc/**"
+      - "!scripts/**"
+      - "scripts/bbwrapper.sh"
+      - "!tools/**"
   push:
     tags:
       - "gardena/v*"
