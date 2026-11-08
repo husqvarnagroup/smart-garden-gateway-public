@@ -24,6 +24,7 @@ if [ "${1-}" = "handle-submodule" ]; then
         elif git rev-parse --quiet --verify "refs/tags/${ref}" >/dev/null; then
             target="refs/tags/${ref}"
         else
+            echo "WARNING: no ref '${ref}' in '${sm_path}'" >&2
             exit 0
         fi
     fi
