@@ -10,7 +10,7 @@ from labgrid.util.qmp import QMPMonitor
 
 from tfw.qemu import read_parse_json_skipping_text, setup_qemu_driver
 
-from tfw.network import ping_gateway
+from tfw.network import ping_gateway, get_gateway_ip_address
 
 logger = logging.getLogger(__name__)
 
@@ -69,23 +69,6 @@ def gateway_id(shell):
 
 
 @pytest.fixture(scope="session")
-def gateway_hostname(shell):
-    stdout, _, exit_code = shell.run(
-        "hostname"
-    )
-
-    if exit_code != 0 or len(stdout) != 1:
-        logger.error(
-            "Failed to read gateway hostname with exit code %d, output: %s",
-
-            exit_code,
-            " ".join(stdout),
-        )
-
-    yield f"{stdout[0].strip()}.local" if stdout else None
-
-
-@pytest.fixture(scope="session")
 def gateway_system_is_running(shell):
     stdout, _, exit_code = shell.run(
         "systemctl --wait is-system-running", timeout=TIMEOUT_SYSTEM_RUNNING
@@ -130,4 +113,21 @@ def gateway_reachable_on_network(gateway_network_active, gateway_hostname):
     """
     if not ping_gateway(gateway_hostname):
         raise RuntimeError(f"Gateway {gateway_hostname} is not reachable on the network")
-    return True
+
+
+@pytest.fixture(scope="session")
+def gateway_hostname(shell):
+    stdout, _, exit_code = shell.run(
+        "hostname"
+    )
+
+    if exit_code != 0 or len(stdout) != 1:
+        logger.error(
+            "Failed to read gateway hostname with exit code %d, output: %s",
+
+            exit_code,
+            " ".join(stdout),
+        )
+
+    yield f"{stdout[0].strip()}.local" if stdout else None
+
