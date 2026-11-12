@@ -1,0 +1,27 @@
+name: Check Python Code
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/python.yaml"
+      - "**.py"
+
+jobs:
+  python:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Lint Python code
+        run: pipx run ruff==0.17.3 check .
+
+      - name: Check format of Python code
+        run: pipx run ruff==0.17.3 format --check .
+
+      - name: Run unit tests of the tools
+        run: |
+          for tests in tools/*/tests; do
+            (cd "$(dirname "$tests")" && python3 -m unittest discover tests)
+          done
