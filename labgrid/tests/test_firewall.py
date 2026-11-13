@@ -1,42 +1,43 @@
-import ipaddress
+import re
 from subprocess import run
 
 import pytest
 
-from tfw.network import ping_gateway, get_gateway_ip_address
+from tfw.network import get_gateway_ip_address
+from tfw.utils import remove_or_touch_and_restore_empty_file, set_and_restore_fw_env_var
 
-
-def test_gateway_network_active(gateway_network_active):
-    assert gateway_network_active
 
 TCP_PORTS_LOCAL = [22, 80, 443, 8001]
 TCP_PORTS_REMOTE = [80, 443, 8001]
-UDP_PORTS_REMOTE = [5353]
+
 
 
 @pytest.fixture(scope="module")
-def get_open_udp_sockets(shell):
-    """Get listening udp sockets on DUT."""
-    # gather information about open udp sockets
-    output, _, exit_code = shell.run("netstat -lun\n")
-
-    test_port_v4 = set()
-    test_port_v6 = set()
-    for line in output[3:]:
-        proto, _recvq, _sendq, local, _foreign = line.split()
-
-        assert proto == 'udp'
-        ip_addr = ipaddress.ip_address(":".join(local.split(':')[:-1]))
-        port = local.split(':')[-1]
-        if ip_addr.version == 4:
-            test_port_v4.add(port)
-        elif ip_addr.version == 6:
-            test_port_v6.add(port)
-
-    return {'ipv4': test_port_v4, 'ipv6': test_port_v6}
+def disable_ssh_fw_env_var(shell):
+    """Make sure the dev_debug_allow_local_ssh is not set on the gateway."""
+    yield set_and_restore_fw_env_var(shell, "dev_debug_allow_local_ssh")
 
 
-def test_local_listening_tcp(gateway_reachable_on_network, shell):
+@pytest.fixture(scope="module")
+def disable_local_ssh_by_file(shell):
+    yield remove_or_touch_and_restore_empty_file(shell, "/etc/allow-local-ssh", touch=False)
+
+
+@pytest.fixture(scope="module")
+def disable_websocketd_by_file(shell):
+    yield remove_or_touch_and_restore_empty_file(shell, "/etc/enable-websocketd", touch=False)
+
+
+@pytest.fixture(scope="module")
+def setup_firewall(shell, disable_ssh_fw_env_var, disable_local_ssh_by_file, disable_websocketd_by_file):
+    """Restart firewall service on gateway."""
+    output, _, exit_code = shell.run("systemctl restart firewall")
+    assert exit_code == 0, f"Failed to restart firewall: {output}"
+
+    yield
+
+
+def test_local_listening_tcp(gateway_reachable_on_network, shell, setup_firewall):
     """Ensure no unexpected and all expected TCP sockets are listening locally.
     This test is inspired by the internal Gardena test jig.
     """
@@ -61,7 +62,7 @@ def test_local_listening_tcp(gateway_reachable_on_network, shell):
 
 
 @pytest.mark.parametrize("protocol", ['ipv4', 'ipv6'])
-def test_remote_listening_tcp(gateway_reachable_on_network, shell, protocol):
+def test_remote_listening_tcp(gateway_reachable_on_network, shell, protocol, setup_firewall):
     """Ensure no unexpected and all expected TCP processes are reachable from a remote host on LAN.
     This test is inspired by the internal Gardena test jig.
     Note: this test requires nmap to be installed on the test runner (host)."""
@@ -95,3 +96,29 @@ def test_remote_listening_tcp(gateway_reachable_on_network, shell, protocol):
     # check all expected ports open
     for port in TCP_PORTS_REMOTE:
         assert port in found_ports, f"Expected TCP port {port} not found open on gateway"
+
+
+def test_netbase_services(gateway_reachable_on_network, shell, setup_firewall):
+    """Ensure that netbase is installed and the services file on the gateway contains all expected services.
+    They are required by the firewall script.
+    """
+
+    output, _, exit_code = shell.run("opkg status netbase 2>/dev/null | grep -q '^Package: netbase$'")
+    assert exit_code == 0, f"netbase package is not installed: {output}"
+
+    expected_services = {
+        "ssh": 22,
+        "http": 80,
+        "https": 443,
+        "mdns": 5353,
+    }
+
+    output, _, exit_code = shell.run("cat /etc/services")
+    assert exit_code == 0, f"Failed to read /etc/services: {output}"
+
+    result = "\n".join(output)
+
+    for service, port in expected_services.items():
+        pattern = rf"^{service}\s+{port}/.*"
+        assert re.search(pattern, result, re.MULTILINE), f"Service {service} with port {port} not found in /etc/services"
+

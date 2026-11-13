@@ -49,7 +49,9 @@ def shell(target):
     state independent of whatever a previous run left behind.
     """
     target.get_driver("PowerProtocol").cycle()
-    return target.get_driver("ShellDriver")
+    shell = target.get_driver("ShellDriver")
+    yield shell
+    shell.run("exit")  # ensure the shell is closed before the target is powered off
 
 
 @pytest.fixture(scope="session")
@@ -99,10 +101,9 @@ def gateway_network_active(gateway_system_is_running, shell):
             stdout,
         )
         raise RuntimeError("systemctl is-active systemd-networkd failed")
-    elif len(stdout) == 1 and stdout[0].strip() == "active":
-        return True
 
-    return False
+
+    assert len(stdout) == 1 and stdout[0].strip() == "active"
 
 
 @pytest.fixture(scope="session")
