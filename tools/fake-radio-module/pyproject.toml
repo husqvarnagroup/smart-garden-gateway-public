@@ -1,0 +1,17 @@
+[project]
+name = "fake_rm"
+version = "0.1.0"
+description = "A simulation of the radio module used on the GARDENA Gateway"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+fake_rm = "fake_rm.__main__:main"
+
+[build-system]
+requires = ["uv_build>=0.13.8,<0.14"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
