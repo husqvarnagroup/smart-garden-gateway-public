@@ -22,28 +22,23 @@ To use a custom serial adapter change the serial port in `config/gateway.yaml` t
 ### Setup Test Project
 
 
-Install poetry first:
+Install uv first. Follow the [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+
+If `pipx` is available, you can also run:
 
 ```
-sudo apt install python3-poetry
-```
-
-or if `pipx` is available:
-
-```
-pipx install poetry
+pipx install uv
 ```
 
 Install project dependencies:
 
 ```
 cd labgrid
-poetry env use 3.12
-poetry install
+uv sync --python 3.12
 ```
 
 ### Run Tests
 
 ```
-poetry run pytest --lg-env config/gateway.yaml tests/
+uv run pytest --lg-env config/gateway.yaml tests/
 ```
