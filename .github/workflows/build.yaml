@@ -11,6 +11,7 @@ on:
       - "!scripts/**"
       - "scripts/bbwrapper.sh"
       - "!tools/**"
+      - "tools/fake-radio-module/**"
   push:
     tags:
       - "gardena/v*"
@@ -176,6 +177,33 @@ jobs:
         with:
           name: build-debug-${{ matrix.machine }}
           path: build-debug-${{ matrix.machine }}.tar
+
+      - name: Set up uv for labgrid tests
+        if: ${{ matrix.machine == 'qemuarm' }}
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: "0.10"
+          working-directory: "labgrid"
+
+      - name: Install labgrid tests Python dependencies
+        if: ${{ matrix.machine == 'qemuarm' }}
+        run: uv sync
+        working-directory: labgrid
+
+      - name: Lint labgrid tests Python code
+        if: ${{ matrix.machine == 'qemuarm' }}
+        run: uv run ruff check
+        working-directory: labgrid
+
+      - name: Check format of labgrid tests Python code
+        if: ${{ matrix.machine == 'qemuarm' }}
+        run: uv run ruff format --check
+        working-directory: labgrid
+
+      - name: Run labgrid tests on qemuarm image
+        if: ${{ matrix.machine == 'qemuarm' }}
+        run: uv run pytest -s --log-cli-level=DEBUG --full-trace --lg-env config/qemu.yaml tests/
+        working-directory: labgrid
 
   docker:
     needs: build
