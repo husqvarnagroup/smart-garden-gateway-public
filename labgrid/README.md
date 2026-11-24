@@ -47,3 +47,24 @@ uv run pytest --lg-env config/gateway.yaml tests/
 
 Each test run writes the serial console output to the file `console_main` in the directory where the
 tests are run.
+
+## Running against QEMU
+
+The suite runs without the bench against a QEMU instance of the same image.
+Build the image first, then select the QEMU environment (from the repository root):
+
+```
+./scripts/bbwrapper.sh qemuarm gardena-image-foss-bnw
+cd labgrid
+uv run pytest --lg-env config/qemu.yaml tests/
+```
+
+The build directory and deploy path are fixed
+(`build-qemuarm/tmp/deploy/images/gardena-sg-qemuarm`), so no extra
+configuration is needed. If the image was not built yet, the tests stop
+with an error that names the missing `*.qemuboot.conf` file.
+
+If a run is killed rather than stopped, a `qemu-system-arm` process stays
+behind, because labgrid never reaches `on_deactivate`. Check with
+`pgrep -a qemu-system-arm` and end it before the next run.
+
