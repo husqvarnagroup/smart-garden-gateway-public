@@ -5,7 +5,7 @@
 [project]
 name = "labgrid-tests"
 version = "0.1.0"
-description = "Run tests for the Smart Garden Gateway with labgird."
+description = "Run tests for the Smart Garden Gateway with labgrid."
 authors = [
     {name = "Lukas Woodtli",email = "lukas.woodtli@husqvarnagroup.com"}
 ]
@@ -13,6 +13,7 @@ license = "GPL-3.0-or-later"
 requires-python = ">=3.12"
 
 dependencies = [
+    "fake-rm",
     "labgrid >=26.0,<27.0",
     "pytest >=9.1.1,<10.0.0",
     "ruff >=0.16.9,<0.17.0",
@@ -21,3 +22,9 @@ dependencies = [
 [tool.uv]
 package = false
 
+[tool.uv.sources]
+# The dependency specification of pyproject.toml does not support relative paths.
+fake-rm = { path = "../tools/fake-radio-module" }
+
+[tool.ruff]
+src = ["."]
