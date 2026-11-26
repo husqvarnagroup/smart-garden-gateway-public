@@ -83,3 +83,57 @@ If a run is killed rather than stopped, a `qemu-system-arm` process stays
 behind, because labgrid never reaches `on_deactivate`. Check with
 `pgrep -a qemu-system-arm` and end it before the next run.
 
+## Wi-Fi Tests
+
+The tests in `tests/wifi` join the AP of the gateway with a dedicated
+adapter on the test host. They check the DHCP lease and measure the
+throughput in both directions with iperf3. They need Docker and run as a
+user in the `docker` group.
+
+The adapter is moved into the network namespace of a container, so the
+host's own networking is not touched. When the container ends, the kernel
+returns the adapter to the host. The adapter's driver must support moving
+it between network namespaces. Most mac80211 drivers do.
+
+Prevent the host from meddling with the adapter. For NetworkManager, run:
+
+```
+IFACE=wl...
+echo -e "[keyfile]\nunmanaged-devices=interface-name:$IFACE" | \
+    sudo tee /etc/NetworkManager/conf.d/$IFACE.conf
+sudo systemctl reload NetworkManager
+```
+
+Run the tests with `LG_WIFI_IFACE` set to the interface name:
+
+```
+LG_WIFI_IFACE=wl... uv run pytest --lg-env config/gateway.yaml tests/wifi
+```
+
+They only run on environments with the labgrid feature `wifi`, i.e. not
+with `config/qemu.yaml`. They are skipped if `LG_WIFI_IFACE` is not set, the
+adapter does not exist or Docker is not reachable.
+
+The settings are options of the target `main` in the environment file:
+
+| Option               | Default | Purpose                               |
+|----------------------|---------|---------------------------------------|
+| `wifi_host_iface`    |         | Adapter if `LG_WIFI_IFACE` is not set |
+| `wifi_assoc_timeout` | `30`    | Seconds to wait for association       |
+| `wifi_dhcp_timeout`  | `20`    | Seconds to wait for a lease           |
+
+The accessory-server only opens the AP if there is no Ethernet connection.
+The tests therefore install iperf3 from the opkg feed while the gateway is
+still connected. Then they set `eth0` down and restart the
+accessory-server. The gateway needs Ethernet with access to the feed.
+
+The SSID of the AP is derived from the hostname, e.g.
+`GARDENA_config(004cdf)` for `GARDENA-004cdf`. The AP has no password. The
+tests fail if `hostapd` does not start within 120 s, or if the AP does not
+show up in a scan within another 120 s.
+
+The iperf3 server runs in the container and the gateway runs the client.
+This way, the firewall of the gateway needs no changes. Each direction
+runs for 10 s and must reach more than 4 Mbit/s.
+
+Only one test session can use an adapter at a time.

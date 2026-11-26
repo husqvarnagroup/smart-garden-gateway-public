@@ -13,6 +13,7 @@ license = "GPL-3.0-or-later"
 requires-python = ">=3.12"
 
 dependencies = [
+    "docker >=7.2,<8.0",
     "fake-rm",
     "labgrid >=26.0,<27.0",
     "pytest >=9.1.1,<10.0.0",

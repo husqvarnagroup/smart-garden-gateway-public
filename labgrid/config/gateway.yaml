@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+features:
+  - wifi
 targets:
   main:
     resources:
@@ -34,3 +36,8 @@ targets:
           # The console carries systemd's boot output as well, which would
           # otherwise interleave with prompt detection.
           post_login_settle_time: 2
+    # Settings for the tests in tests/wifi. The Wi-Fi adapter on the test
+    # host is set with LG_WIFI_IFACE.
+    options:
+      wifi_assoc_timeout: 30
+      wifi_dhcp_timeout: 20
