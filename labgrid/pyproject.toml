@@ -16,7 +16,7 @@ dependencies = [
     "fake-rm",
     "labgrid >=26.0,<27.0",
     "pytest >=9.1.1,<10.0.0",
-    "ruff >=0.16.9,<0.17.0",
+    "ruff >=0.17.6,<0.18.0",
 ]
 
 [tool.uv]
