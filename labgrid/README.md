@@ -51,6 +51,18 @@ of the session. The gateway has to be up already.
 Each test run writes the serial console output to the file `console_main` in the directory where the
 tests are run.
 
+### Test Log
+
+The output shows the steps of labgrid at INFO level. The expect steps of the
+console are logged at DEBUG level, so they are hidden. To keep them in a log
+file, run:
+
+```
+uv run pytest --lg-env config/gateway.yaml --log-file=pytest.log tests/
+```
+
+To show them in the terminal as well, add `-vvvv`.
+
 ## Running against QEMU
 
 The suite runs without the bench against a QEMU instance of the same image.

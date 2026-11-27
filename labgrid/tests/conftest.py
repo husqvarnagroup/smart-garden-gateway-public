@@ -27,6 +27,20 @@ QMPMonitor._read_parse_json = read_parse_json_skipping_text
 TIMEOUT_SYSTEM_RUNNING = 300.0
 
 
+def demote_console_expect_steps(record):
+    """Log the expect steps of the console at DEBUG level instead of INFO.
+
+    This keeps them out of the terminal but not out of the log file.
+    """
+    if record.step.sourceinfo[1] == "consoleexpectmixin.py":
+        record.levelno = logging.DEBUG
+        record.levelname = logging.getLevelName(logging.DEBUG)
+    return True
+
+
+logging.getLogger("StepLogger").addFilter(demote_console_expect_steps)
+
+
 @pytest.fixture(scope="session")
 def target(target):
     """Handle the qemu test setup.
