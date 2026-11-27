@@ -14,10 +14,10 @@ targets:
           speed: 115200            
     drivers:
       - SerialDriver: {}
-      # The adapter's RTS line switches the gateway's power, which is on
-      # while RTS is asserted.
+      # The adapter's DTR line switches the gateway's power, which is on
+      # while DTR is asserted.
       - SerialPortDigitalOutputDriver:
-          signal: rts
+          signal: dtr
           invert: false
       # `delay` is how long the gateway stays powered off during a cycle.
       - DigitalOutputPowerDriver:

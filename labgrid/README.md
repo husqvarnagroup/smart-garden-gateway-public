@@ -3,7 +3,7 @@
 This directory contains tests for the GARDENA smart Gateway that drive the
 gateway over its serial console with [labgrid](https://labgrid.readthedocs.io/).
 
-Only a serial adapter whose RTS line switches the gateway's power is 
+Only a serial adapter whose DTR line switches the gateway's power is
 required to run the tests on a real gateway.
 
 It's expected that the test run on a Linux machine.
