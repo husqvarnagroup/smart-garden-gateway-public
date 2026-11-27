@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import logging
+import os
 
 import pytest
 from labgrid import ConsoleLoggingReporter
@@ -42,8 +43,13 @@ def shell(target):
 
     Cycling on setup rather than cleaning up on teardown keeps the starting
     state independent of whatever a previous run left behind.
+
+    The cycle is skipped if LG_NO_POWER_CYCLE is set to a value other than 0.
+    The gateway then has to be running and logged in on the console or at the
+    login prompt.
     """
-    target.get_driver("PowerProtocol").cycle()
+    if os.environ.get("LG_NO_POWER_CYCLE", "0") in ("", "0"):
+        target.get_driver("PowerProtocol").cycle()
     return target.get_driver("ShellDriver")
 
 

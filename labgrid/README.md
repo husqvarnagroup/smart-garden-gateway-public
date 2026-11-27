@@ -43,6 +43,9 @@ uv sync --python 3.12
 uv run pytest --lg-env config/gateway.yaml tests/
 ```
 
+Set `LG_NO_POWER_CYCLE=1` to skip the power cycle of the gateway at the start
+of the session. The gateway has to be up already.
+
 ### Console Log
 
 Each test run writes the serial console output to the file `console_main` in the directory where the
